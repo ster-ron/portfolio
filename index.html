@@ -1193,6 +1193,106 @@
       background: rgba(255, 255, 255, 0.08);
     }
 
+    /* CONTACT FORM */
+    .contact-form-section {
+      padding: 0 5vw clamp(4rem, 10vw, 6rem);
+      background: linear-gradient(135deg, var(--ink) 0%, #2d1b4e 100%);
+    }
+
+    .contact-form-wrap {
+      max-width: 580px;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 0.75rem;
+      padding: clamp(1.5rem, 4vw, 2.5rem);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+      position: relative;
+    }
+
+    .contact-form-title {
+      font-family: var(--serif);
+      font-size: clamp(1.2rem, 3.5vw, 1.5rem);
+      font-weight: normal;
+      margin-bottom: 0.35rem;
+    }
+
+    .contact-form-sub {
+      font-size: clamp(0.82rem, 2vw, 0.88rem);
+      color: #666;
+      margin-bottom: 1.5rem;
+    }
+
+    .contact-form {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.85rem;
+    }
+
+    .contact-form .full {
+      grid-column: 1/-1;
+    }
+
+    .contact-form input,
+    .contact-form textarea {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      border: 2px solid #e8e0f5;
+      border-radius: 0.4rem;
+      background: #faf8ff;
+      font-family: var(--sans);
+      font-size: clamp(0.85rem, 2vw, 0.9rem);
+      color: var(--ink);
+      outline: none;
+      transition: border-color 0.2s;
+      resize: none;
+    }
+
+    .contact-form input:focus,
+    .contact-form textarea:focus {
+      border-color: var(--a1);
+      background: #fff;
+    }
+
+    .contact-submit-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: clamp(0.75rem, 2vw, 0.9rem) clamp(1.25rem, 4vw, 2rem);
+      background: var(--a1);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      border-radius: 0.4rem;
+      font-size: clamp(0.75rem, 2vw, 0.82rem);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: opacity 0.2s, transform 0.15s;
+      font-family: var(--sans);
+      font-weight: 600;
+    }
+
+    .contact-submit-btn:hover {
+      opacity: 0.88;
+      transform: translateY(-1px);
+    }
+
+    .contact-form-success {
+      display: none;
+      margin-top: 1rem;
+      padding: 0.9rem 1.25rem;
+      background: #f0fdf4;
+      border-left: 4px solid var(--a5);
+      border-radius: 0 0.4rem 0.4rem 0;
+      font-size: 0.88rem;
+      color: #065f46;
+    }
+
+    @media (max-width: 560px) {
+      .contact-form {
+        grid-template-columns: 1fr;
+      }
+    }
+
     /* FOOTER */
     footer {
       background: var(--ink);
@@ -1300,23 +1400,36 @@
         grid-template-columns: 1fr;
       }
     }
+
+    /* TAB SYSTEM */
+    .tab-section {
+      display: none;
+    }
+
+    .tab-section.active {
+      display: block;
+    }
+
+    .nav-links a.active-link,
+    .mobile-menu a.active-link {
+      background: var(--a1);
+      color: #fff;
+    }
   </style>
 </head>
 
 <body>
 
   <nav>
-    <a class="nav-logo" href="#">
+    <a class="nav-logo" href="javascript:void(0)" onclick="showTab('home')">
       <img src="logo.png" alt="Bash Arts logo">
       <span class="nav-logo-name">Bashir Yaqub</span>
     </a>
     <ul class="nav-links">
-      <li><a href="#work">My Work</a></li>
-      <li><a href="#transform">4K Transform</a></li>
-      <li><a href="#pricing">Pricing</a></li>
-      <li><a href="#testimonials">Reviews</a></li>
-      <li><a href="#about">About Me</a></li>
-      <li><a href="#commission">Commission</a></li>
+      <li><a href="javascript:void(0)" data-tab="home" onclick="showTab('home')">Home</a></li>
+      <li><a href="javascript:void(0)" data-tab="reviews" onclick="showTab('reviews')">Reviews</a></li>
+      <li><a href="javascript:void(0)" data-tab="about" onclick="showTab('about')">About Me</a></li>
+      <li><a href="javascript:void(0)" data-tab="contact" onclick="showTab('contact')">Contact</a></li>
     </ul>
     <button class="hamburger" onclick="toggleMenu()" aria-label="Open menu">
       <span></span><span></span><span></span>
@@ -1325,286 +1438,312 @@
 
   <div class="mobile-menu" id="mobile-menu">
     <button class="mobile-close" onclick="toggleMenu()">&times;</button>
-    <a href="#work" onclick="toggleMenu()">My Work</a>
-    <a href="#transform" onclick="toggleMenu()">4K Transform</a>
-    <a href="#pricing" onclick="toggleMenu()">Pricing</a>
-    <a href="#testimonials" onclick="toggleMenu()">Reviews</a>
-    <a href="#about" onclick="toggleMenu()">About Me</a>
-    <a href="#commission" onclick="toggleMenu()">Commission</a>
+    <a href="javascript:void(0)" data-tab="home" onclick="showTab('home'); toggleMenu()">Home</a>
+    <a href="javascript:void(0)" data-tab="reviews" onclick="showTab('reviews'); toggleMenu()">Reviews</a>
+    <a href="javascript:void(0)" data-tab="about" onclick="showTab('about'); toggleMenu()">About Me</a>
+    <a href="javascript:void(0)" data-tab="contact" onclick="showTab('contact'); toggleMenu()">Contact</a>
   </div>
-
-  <section class="hero">
-    <div class="hero-bg-text">ART</div>
-    <div class="hero-inner">
-      <span class="hero-label">&#9998; Pencil Artist &mdash; Nairobi, Kenya</span>
-      <h1>I draw what<br>I <em>see</em> in you.</h1>
-      <p class="hero-sub">Hi, I&rsquo;m Bashir. I do hyper-realistic pencil portraits &mdash; just graphite, paper, and
-        a lot of patience. Every face tells a story, and I make sure mine captures it.</p>
-      <a class="hero-cta" href="#commission">Commission a portrait &rarr;</a>
-      <div class="hero-chips">
-        <span class="chip">Pencil &amp; Graphite</span>
-        <span class="chip">Portraits</span>
-        <span class="chip">Figurative</span>
-        <span class="chip">4K Image Upscaling</span>
-        <span class="chip">Gifts &amp; Events</span>
-        <span class="chip">No barriers &mdash; everyone welcome</span>
-      </div>
-    </div>
-  </section>
-
-  <section class="gallery-section" id="work">
-    <div class="section-header">
-      <h2 class="section-heading">My Work</h2>
-      <span class="section-tag">Selected pieces</span>
-    </div>
-    <div class="gallery-grid">
-      <div class="artwork">
-        <span class="artwork-badge badge-orange">Triptych</span>
-        <img src="Triptych.jpg" alt="Three framed pencil portrait drawings">
-        <div class="artwork-caption">
-          <p class="caption-title">Portraits in Series</p>
-          <p class="caption-meta">Pencil on paper &middot; Triptych</p>
+  <div id="tab-home" class="tab-section active">
+    <section class="hero">
+      <div class="hero-bg-text">ART</div>
+      <div class="hero-inner">
+        <span class="hero-label">&#9998; Pencil Artist &mdash; Nairobi, Kenya</span>
+        <h1>I draw what<br>I <em>see</em> in you.</h1>
+        <p class="hero-sub">Hi, I&rsquo;m Bashir. I do hyper-realistic pencil portraits &mdash; just graphite, paper,
+          and
+          a lot of patience. Every face tells a story, and I make sure mine captures it.</p>
+        <a class="hero-cta" href="javascript:void(0)" onclick="showTab('contact')">Commission a portrait &rarr;</a>
+        <div class="hero-chips">
+          <span class="chip">Pencil &amp; Graphite</span>
+          <span class="chip">Portraits</span>
+          <span class="chip">Figurative</span>
+          <span class="chip">4K Image Upscaling</span>
+          <span class="chip">Gifts &amp; Events</span>
+          <span class="chip">No barriers &mdash; everyone welcome</span>
         </div>
       </div>
-      <div class="artwork">
-        <span class="artwork-badge badge-purple">Portrait</span>
-        <img src="portrait.png" alt="Pencil drawing of a man in a fedora">
-        <div class="artwork-caption">
-          <p class="caption-title">The Quiet Moment</p>
-          <p class="caption-meta">Pencil on paper &middot; Portrait</p>
+    </section>
+    <section class="gallery-section" id="work">
+      <div class="section-header">
+        <h2 class="section-heading">My Work</h2>
+        <span class="section-tag">Selected pieces</span>
+      </div>
+      <div class="gallery-grid">
+        <div class="artwork">
+          <span class="artwork-badge badge-orange">Triptych</span>
+          <img src="Triptych.jpg" alt="Three framed pencil portrait drawings">
+          <div class="artwork-caption">
+            <p class="caption-title">Portraits in Series</p>
+            <p class="caption-meta">Pencil on paper &middot; Triptych</p>
+          </div>
+        </div>
+        <div class="artwork">
+          <span class="artwork-badge badge-purple">Portrait</span>
+          <img src="portrait.png" alt="Pencil drawing of a man in a fedora">
+          <div class="artwork-caption">
+            <p class="caption-title">The Quiet Moment</p>
+            <p class="caption-meta">Pencil on paper &middot; Portrait</p>
+          </div>
+        </div>
+        <div class="artwork">
+          <span class="artwork-badge badge-blue">Figurative</span>
+          <img src="figurative.jpg" alt="Pencil drawing of a footballer">
+          <div class="artwork-caption">
+            <p class="caption-title">The Footballer</p>
+            <p class="caption-meta">Pencil on paper &middot; Figurative</p>
+          </div>
         </div>
       </div>
-      <div class="artwork">
-        <span class="artwork-badge badge-blue">Figurative</span>
-        <img src="figurative.jpg" alt="Pencil drawing of a footballer">
-        <div class="artwork-caption">
-          <p class="caption-title">The Footballer</p>
-          <p class="caption-meta">Pencil on paper &middot; Figurative</p>
+    </section>
+    <!-- BEFORE / AFTER TRANSFORM SECTION -->
+    <section class="transform-section" id="transform">
+      <div class="transform-inner">
+        <div class="transform-header">
+          <span class="transform-label">&#10024; Exclusive to Bash Arts</span>
+          <h2>Any photo. Any quality.<br>Turned into a <em>masterpiece.</em></h2>
+          <p>Send me any image &mdash; blurry, old, low resolution &mdash; and I don&rsquo;t just draw it. I upscale it
+            to
+            4K quality and render it in stunning pencil detail. No one is turned away. I can serve every person, without
+            any barrier.</p>
         </div>
-      </div>
-    </div>
-  </section>
 
-  <!-- BEFORE / AFTER TRANSFORM SECTION -->
-  <section class="transform-section" id="transform">
-    <div class="transform-inner">
-      <div class="transform-header">
-        <span class="transform-label">&#10024; Exclusive to Bash Arts</span>
-        <h2>Any photo. Any quality.<br>Turned into a <em>masterpiece.</em></h2>
-        <p>Send me any image &mdash; blurry, old, low resolution &mdash; and I don&rsquo;t just draw it. I upscale it to
-          4K quality and render it in stunning pencil detail. No one is turned away. I can serve every person, without
-          any barrier.</p>
-      </div>
-
-      <div class="transform-grid">
-        <div class="transform-card">
-          <span class="transform-badge badge-before">&#128247; Original photo</span>
-          <img src="original18.jpg" alt="Original photo of Njeri in a teal dress">
-        </div>
-        <div class="transform-card">
-          <span class="transform-badge badge-after">&#9998; Pencil portrait</span>
-          <img src="crafted18.jpg" alt="Bashir's pencil drawing of Njeri">
-        </div>
-      </div>
-
-      <!-- Second transformation example -->
-      <div style="margin-top: clamp(1rem,3vw,1.5rem); margin-bottom: clamp(1rem,3vw,1.5rem);">
-        <p
-          style="font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:0.75rem;">
-          &#8212; Another example</p>
         <div class="transform-grid">
           <div class="transform-card">
-            <span class="transform-badge badge-before">&#128247; Low-res selfie</span>
-            <img src="lowselfie.jpg" alt="Low quality selfie of a child">
+            <span class="transform-badge badge-before">&#128247; Original photo</span>
+            <img src="original18.jpg" alt="Original photo of Njeri in a teal dress">
           </div>
           <div class="transform-card">
-            <span class="transform-badge badge-after">&#9998; Final portrait</span>
-            <img src="final.jpg" alt="Composite showing the photo inputs and pencil drawing result">
+            <span class="transform-badge badge-after">&#9998; Pencil portrait</span>
+            <img src="crafted18.jpg" alt="Bashir's pencil drawing of Njeri">
+          </div>
+        </div>
+
+        <!-- Second transformation example -->
+        <div style="margin-top: clamp(1rem,3vw,1.5rem); margin-bottom: clamp(1rem,3vw,1.5rem);">
+          <p
+            style="font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:0.75rem;">
+            &#8212; Another example</p>
+          <div class="transform-grid">
+            <div class="transform-card">
+              <span class="transform-badge badge-before">&#128247; Low-res selfie</span>
+              <img src="lowselfie.jpg" alt="Low quality selfie of a child">
+            </div>
+            <div class="transform-card">
+              <span class="transform-badge badge-after">&#9998; Final portrait</span>
+              <img src="final.jpg" alt="Composite showing the photo inputs and pencil drawing result">
+            </div>
+          </div>
+        </div>
+
+        <div class="transform-perks">
+          <div class="perk">
+            <span class="perk-icon">&#128247;</span>
+            <span class="perk-title">Any image quality</span>
+            <p class="perk-desc">Low-res, blurry, old photos? No problem. I work with what you have.</p>
+          </div>
+          <div class="perk">
+            <span class="perk-icon">&#127775;</span>
+            <span class="perk-title">4K upscaling</span>
+            <p class="perk-desc">I enhance your reference image to ultra-high resolution before drawing.</p>
+          </div>
+          <div class="perk">
+            <span class="perk-icon">&#127759;</span>
+            <span class="perk-title">No barriers</span>
+            <p class="perk-desc">Everyone deserves great art. I serve every client, wherever you are.</p>
+          </div>
+          <div class="perk">
+            <span class="perk-icon">&#9998;</span>
+            <span class="perk-title">100% hand-drawn</span>
+            <p class="perk-desc">Every line is mine. Pure graphite, pure craft, no digital drawing tools.</p>
           </div>
         </div>
       </div>
-
-      <div class="transform-perks">
-        <div class="perk">
-          <span class="perk-icon">&#128247;</span>
-          <span class="perk-title">Any image quality</span>
-          <p class="perk-desc">Low-res, blurry, old photos? No problem. I work with what you have.</p>
+    </section>
+    <section class="pricing-section" id="pricing">
+      <div class="pricing-inner">
+        <div class="section-header">
+          <h2 class="section-heading">Pricing</h2>
+          <span class="section-tag">Simple &amp; affordable</span>
         </div>
-        <div class="perk">
-          <span class="perk-icon">&#127775;</span>
-          <span class="perk-title">4K upscaling</span>
-          <p class="perk-desc">I enhance your reference image to ultra-high resolution before drawing.</p>
+        <div class="pricing-intro">
+          <p>Every portrait is hand-drawn from scratch. Send me your photo &mdash; any quality &mdash; and I&rsquo;ll
+            give
+            you something you&rsquo;ll keep forever. Prices below are starting points; larger or more complex pieces may
+            vary.</p>
         </div>
-        <div class="perk">
-          <span class="perk-icon">&#127759;</span>
-          <span class="perk-title">No barriers</span>
-          <p class="perk-desc">Everyone deserves great art. I serve every client, wherever you are.</p>
-        </div>
-        <div class="perk">
-          <span class="perk-icon">&#9998;</span>
-          <span class="perk-title">100% hand-drawn</span>
-          <p class="perk-desc">Every line is mine. Pure graphite, pure craft, no digital drawing tools.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="testimonials-section" id="testimonials">
-    <div class="testimonials-inner">
-      <div class="testimonials-top">
-        <h2 class="section-heading">What people say</h2>
-        <span class="review-count-badge" id="review-count"></span>
-      </div>
-      <div class="testimonials-grid" id="reviews-grid"></div>
-      <div class="review-form-wrap">
-        <h3 class="review-form-title">Had a piece done by me?</h3>
-        <p class="review-form-sub">I&rsquo;d love to hear what you thought. Leave a review below &mdash; it means a lot.
-        </p>
-        <div class="review-form">
-          <input type="text" id="r-name" placeholder="Your name" maxlength="60" />
-          <div class="star-picker full">
-            <span>Rating</span>
-            <button class="star-btn" data-val="1">&#9733;</button>
-            <button class="star-btn" data-val="2">&#9733;</button>
-            <button class="star-btn" data-val="3">&#9733;</button>
-            <button class="star-btn" data-val="4">&#9733;</button>
-            <button class="star-btn" data-val="5">&#9733;</button>
+        <div class="pricing-grid">
+          <div class="pricing-card featured">
+            <span class="pricing-badge">&#9733; Most popular</span>
+            <p class="pricing-size">A4 Portrait</p>
+            <p class="pricing-price">Ksh 1,000</p>
+            <p class="pricing-unit">per drawing</p>
+            <ul class="pricing-features">
+              <li>100% hand-drawn in pencil</li>
+              <li>Single or group portrait</li>
+              <li>4K image upscaling included</li>
+              <li>Any photo quality accepted</li>
+              <li>Framed or unframed</li>
+            </ul>
           </div>
-          <textarea class="full" id="r-text" placeholder="Share your experience..." rows="4" maxlength="400"></textarea>
-          <div class="full">
-            <button class="submit-btn" id="submit-btn" onclick="submitReview()">&#10003; Post Review</button>
-            <div class="form-success" id="form-success">&#10003; Thank you so much &mdash; your review has been posted!
+          <div class="pricing-card">
+            <p class="pricing-size">A3 Portrait</p>
+            <p class="pricing-price">Coming soon</p>
+            <p class="pricing-unit">per drawing</p>
+            <ul class="pricing-features">
+              <li>Larger, more detailed work</li>
+              <li>Ideal for wall display</li>
+              <li>4K image upscaling included</li>
+              <li>Any photo quality accepted</li>
+            </ul>
+          </div>
+          <div class="pricing-card">
+            <p class="pricing-size">A2 &amp; A1</p>
+            <p class="pricing-price">Coming soon</p>
+            <p class="pricing-unit">per drawing</p>
+            <ul class="pricing-features">
+              <li>Statement-size artwork</li>
+              <li>Events &amp; exhibitions</li>
+              <li>4K image upscaling included</li>
+              <li>Contact me for quote</li>
+            </ul>
+          </div>
+        </div>
+        <p class="pricing-note">&#9998; Not sure what size you need? Just reach out &mdash; I&rsquo;ll help you choose.
+          Delivery within Nairobi can be arranged.</p>
+      </div>
+    </section>
+  </div>
+
+  <div id="tab-reviews" class="tab-section">
+    <section class="testimonials-section" id="testimonials">
+      <div class="testimonials-inner">
+        <div class="testimonials-top">
+          <h2 class="section-heading">What people say</h2>
+          <span class="review-count-badge" id="review-count"></span>
+        </div>
+        <div class="testimonials-grid" id="reviews-grid"></div>
+        <div class="review-form-wrap">
+          <h3 class="review-form-title">Had a piece done by me?</h3>
+          <p class="review-form-sub">I&rsquo;d love to hear what you thought. Leave a review below &mdash; it means a
+            lot.
+          </p>
+          <div class="review-form">
+            <input type="text" id="r-name" placeholder="Your name" maxlength="60" />
+            <div class="star-picker full">
+              <span>Rating</span>
+              <button class="star-btn" data-val="1">&#9733;</button>
+              <button class="star-btn" data-val="2">&#9733;</button>
+              <button class="star-btn" data-val="3">&#9733;</button>
+              <button class="star-btn" data-val="4">&#9733;</button>
+              <button class="star-btn" data-val="5">&#9733;</button>
+            </div>
+            <textarea class="full" id="r-text" placeholder="Share your experience..." rows="4"
+              maxlength="400"></textarea>
+            <div class="full">
+              <button class="submit-btn" id="submit-btn" onclick="submitReview()">&#10003; Post Review</button>
+              <div class="form-success" id="form-success">&#10003; Thank you so much &mdash; your review has been
+                posted!
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
-
-  <section class="about-section" id="about">
-    <div class="about-inner">
-      <div class="about-photo-wrap">
-        <img class="about-photo" src="bashir.jpg" alt="Bashir Yaqub holding one of his pencil drawings in his studio">
-        <div class="about-photo-badge">Bashir Yaqub<br>Pencil Artist<br>Nairobi</div>
-      </div>
-      <div class="about-content">
-        <span class="about-label">About Me</span>
-        <h2>Every stroke is a decision.</h2>
-        <p>I&rsquo;m Bashir Yaqub, a pencil artist based in Nairobi. I work entirely by hand &mdash; no digital tools,
-          no shortcuts. Just graphite on paper, built up layer by layer until the person in front of me comes alive on
-          the page.</p>
-        <p>I love portraits most. There&rsquo;s something powerful about capturing someone&rsquo;s likeness so precisely
-          that they feel it when they see it. That reaction &mdash; that silence &mdash; is what keeps me drawing.</p>
-        <div class="about-stats">
-          <div class="stat-card">
-            <p class="stat-value">50+</p>
-            <p class="stat-label">Commissions done</p>
-          </div>
-          <div class="stat-card">
-            <p class="stat-value">100%</p>
-            <p class="stat-label">Hand-drawn</p>
-          </div>
-          <div class="stat-card">
-            <p class="stat-value">A4&ndash;A1</p>
-            <p class="stat-label">Sizes I work in</p>
-          </div>
-          <div class="stat-card">
-            <p class="stat-value">4K</p>
-            <p class="stat-label">Image upscaling</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- PRICING -->
-  <section class="pricing-section" id="pricing">
-    <div class="pricing-inner">
-      <div class="section-header">
-        <h2 class="section-heading">Pricing</h2>
-        <span class="section-tag">Simple &amp; affordable</span>
-      </div>
-      <div class="pricing-intro">
-        <p>Every portrait is hand-drawn from scratch. Send me your photo &mdash; any quality &mdash; and I&rsquo;ll give
-          you something you&rsquo;ll keep forever. Prices below are starting points; larger or more complex pieces may
-          vary.</p>
-      </div>
-      <div class="pricing-grid">
-        <div class="pricing-card featured">
-          <span class="pricing-badge">&#9733; Most popular</span>
-          <p class="pricing-size">A4 Portrait</p>
-          <p class="pricing-price">Ksh 1,000</p>
-          <p class="pricing-unit">per drawing</p>
-          <ul class="pricing-features">
-            <li>100% hand-drawn in pencil</li>
-            <li>Single or group portrait</li>
-            <li>4K image upscaling included</li>
-            <li>Any photo quality accepted</li>
-            <li>Framed or unframed</li>
-          </ul>
-        </div>
-        <div class="pricing-card">
-          <p class="pricing-size">A3 Portrait</p>
-          <p class="pricing-price">Coming soon</p>
-          <p class="pricing-unit">per drawing</p>
-          <ul class="pricing-features">
-            <li>Larger, more detailed work</li>
-            <li>Ideal for wall display</li>
-            <li>4K image upscaling included</li>
-            <li>Any photo quality accepted</li>
-          </ul>
-        </div>
-        <div class="pricing-card">
-          <p class="pricing-size">A2 &amp; A1</p>
-          <p class="pricing-price">Coming soon</p>
-          <p class="pricing-unit">per drawing</p>
-          <ul class="pricing-features">
-            <li>Statement-size artwork</li>
-            <li>Events &amp; exhibitions</li>
-            <li>4K image upscaling included</li>
-            <li>Contact me for quote</li>
-          </ul>
-        </div>
-      </div>
-      <p class="pricing-note">&#9998; Not sure what size you need? Just reach out &mdash; I&rsquo;ll help you choose.
-        Delivery within Nairobi can be arranged.</p>
-    </div>
-  </section>
-
-  <div class="contact-strip">
-    <div class="contact-strip-inner">
-      <a class="contact-item" href="tel:+254756593469">
-        <span class="contact-icon icon-phone">&#128222;</span><span>+254 756 593 469</span>
-      </a>
-      <a class="contact-item" href="mailto:bashirsivona70@gmail.com">
-        <span class="contact-icon icon-email">&#9993;</span><span>bashirsivona70@gmail.com</span>
-      </a>
-      <a class="contact-item" href="https://instagram.com/bashir.art" target="_blank">
-        <span class="contact-icon icon-ig">&#9824;</span><span>@bashir.art</span>
-      </a>
-    </div>
+    </section>
   </div>
 
-  <section class="commission-section" id="commission">
-    <div class="commission-inner">
-      <span class="commission-label">&#9998; Work with me</span>
-      <h2>Let me draw<br>someone you <em>love.</em></h2>
-      <p>Send me any photo &mdash; any quality &mdash; and I&rsquo;ll upscale it to 4K and turn it into a pencil
-        portrait. Gift it, frame it, keep it forever.</p>
-      <div class="cta-buttons">
-        <a class="cta-btn primary" href="mailto:bashirsivona70@gmail.com">&#9993; Email Me</a>
-        <a class="cta-btn secondary" href="tel:+254756593469">&#128222; Call Me</a>
-        <a class="cta-btn outline" href="https://instagram.com/bashir.art" target="_blank">@bashir.art</a>
+  <div id="tab-about" class="tab-section">
+    <section class="about-section" id="about">
+      <div class="about-inner">
+        <div class="about-photo-wrap">
+          <img class="about-photo" src="bashir.jpg" alt="Bashir Yaqub holding one of his pencil drawings in his studio">
+          <div class="about-photo-badge">Bashir Yaqub<br>Pencil Artist<br>Nairobi</div>
+        </div>
+        <div class="about-content">
+          <span class="about-label">About Me</span>
+          <h2>Every stroke is a decision.</h2>
+          <p>I&rsquo;m Bashir Yaqub, a pencil artist based in Nairobi. I work entirely by hand &mdash; no digital tools,
+            no shortcuts. Just graphite on paper, built up layer by layer until the person in front of me comes alive on
+            the page.</p>
+          <p>I love portraits most. There&rsquo;s something powerful about capturing someone&rsquo;s likeness so
+            precisely
+            that they feel it when they see it. That reaction &mdash; that silence &mdash; is what keeps me drawing.</p>
+          <div class="about-stats">
+            <div class="stat-card">
+              <p class="stat-value">50+</p>
+              <p class="stat-label">Commissions done</p>
+            </div>
+            <div class="stat-card">
+              <p class="stat-value">100%</p>
+              <p class="stat-label">Hand-drawn</p>
+            </div>
+            <div class="stat-card">
+              <p class="stat-value">A4&ndash;A1</p>
+              <p class="stat-label">Sizes I work in</p>
+            </div>
+            <div class="stat-card">
+              <p class="stat-value">4K</p>
+              <p class="stat-label">Image upscaling</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div id="tab-contact" class="tab-section">
+    <div class="contact-strip">
+      <div class="contact-strip-inner">
+        <a class="contact-item" href="tel:+254756593469">
+          <span class="contact-icon icon-phone">&#128222;</span><span>+254 756 593 469</span>
+        </a>
+        <a class="contact-item" href="mailto:bashirsivona70@gmail.com">
+          <span class="contact-icon icon-email">&#9993;</span><span>bashirsivona70@gmail.com</span>
+        </a>
+        <a class="contact-item" href="https://instagram.com/bashir.art" target="_blank">
+          <span class="contact-icon icon-ig">&#9824;</span><span>@bashir.art</span>
+        </a>
       </div>
     </div>
-  </section>
+    <section class="commission-section" id="contact">
+      <div class="commission-inner">
+        <span class="commission-label">&#9998; Get in touch</span>
+        <h2>Let me draw<br>someone you <em>love.</em></h2>
+        <p>Send me any photo &mdash; any quality &mdash; and I&rsquo;ll upscale it to 4K and turn it into a pencil
+          portrait. Gift it, frame it, keep it forever.</p>
+        <div class="cta-buttons">
+          <a class="cta-btn primary" href="mailto:bashirsivona70@gmail.com">&#9993; Email Me</a>
+          <a class="cta-btn secondary" href="tel:+254756593469">&#128222; Call Me</a>
+          <a class="cta-btn outline" href="https://instagram.com/bashir.art" target="_blank">@bashir.art</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="contact-form-section">
+      <div class="contact-form-wrap">
+        <h3 class="contact-form-title">Send me a message</h3>
+        <p class="contact-form-sub">Tell me a bit about what you&rsquo;re after &mdash; I&rsquo;ll get back to you by
+          email as soon as I can.</p>
+        <div class="contact-form">
+          <input type="text" id="c-name" placeholder="Your name" maxlength="60" />
+          <input type="email" id="c-email" placeholder="Your email" maxlength="100" />
+          <textarea class="full" id="c-message" placeholder="What would you like drawn?" rows="4"
+            maxlength="500"></textarea>
+          <div class="full">
+            <button class="contact-submit-btn" id="contact-submit-btn" onclick="submitContactForm()">&#9993; Send
+              Message</button>
+            <div class="contact-form-success" id="contact-form-success">&#10003; Thanks &mdash; your email app should
+              now be open with your message ready to send.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
 
   <footer>
     <img class="footer-logo" src="logo.png" alt="Bash Arts">
     <span>&copy; 2026 Bashir Yaqub &mdash; Pencil Artist, Nairobi</span>
     <span><a href="https://instagram.com/bashir.art" target="_blank">@bashir.art</a></span>
   </footer>
-
   <script src="config.js"></script>
   <script>
     const SUPABASE_URL = window.SUPABASE_URL;
@@ -1629,6 +1768,38 @@
 
     function toggleMenu() {
       document.getElementById('mobile-menu').classList.toggle('open');
+    }
+
+    function showTab(name) {
+      document.querySelectorAll('.tab-section').forEach(function (sec) {
+        sec.classList.toggle('active', sec.id === 'tab-' + name);
+      });
+      document.querySelectorAll('[data-tab]').forEach(function (link) {
+        link.classList.toggle('active-link', link.dataset.tab === name);
+      });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    showTab('home');
+
+    function submitContactForm() {
+      const name = document.getElementById('c-name').value.trim();
+      const email = document.getElementById('c-email').value.trim();
+      const message = document.getElementById('c-message').value.trim();
+      const succ = document.getElementById('contact-form-success');
+
+      if (!name) { document.getElementById('c-name').focus(); return; }
+      if (!email) { document.getElementById('c-email').focus(); return; }
+      if (!message) { document.getElementById('c-message').focus(); return; }
+
+      const subject = encodeURIComponent('Portrait inquiry from ' + name);
+      const body = encodeURIComponent(
+        message + '\n\n---\nFrom: ' + name + '\nEmail: ' + email
+      );
+      window.location.href = 'mailto:bashirsivona70@gmail.com?subject=' + subject + '&body=' + body;
+
+      succ.style.display = 'block';
+      setTimeout(() => { succ.style.display = 'none'; }, 6000);
     }
 
     let selectedStars = 0;
