@@ -1575,7 +1575,7 @@
           <div class="pricing-card featured">
             <span class="pricing-badge">&#9733; Most popular</span>
             <p class="pricing-size">A4 Portrait</p>
-            <p class="pricing-price">Ksh 1,000</p>
+            <p class="pricing-price">Ksh 500</p>
             <p class="pricing-unit">per drawing</p>
             <ul class="pricing-features">
               <li>100% hand-drawn in pencil</li>
@@ -1587,7 +1587,7 @@
           </div>
           <div class="pricing-card">
             <p class="pricing-size">A3 Portrait</p>
-            <p class="pricing-price">Coming soon</p>
+            <p class="pricing-price">Ksh 1,000</p>
             <p class="pricing-unit">per drawing</p>
             <ul class="pricing-features">
               <li>Larger, more detailed work</li>
@@ -1597,14 +1597,25 @@
             </ul>
           </div>
           <div class="pricing-card">
-            <p class="pricing-size">A2 &amp; A1</p>
-            <p class="pricing-price">Coming soon</p>
+            <p class="pricing-size">A2 Portrait</p>
+            <p class="pricing-price">Ksh 1,900</p>
             <p class="pricing-unit">per drawing</p>
             <ul class="pricing-features">
               <li>Statement-size artwork</li>
               <li>Events &amp; exhibitions</li>
               <li>4K image upscaling included</li>
-              <li>Contact me for quote</li>
+              <li>Any photo quality accepted</li>
+            </ul>
+          </div>
+          <div class="pricing-card">
+            <p class="pricing-size">A1 Portrait</p>
+            <p class="pricing-price">Ksh 3,500</p>
+            <p class="pricing-unit">per drawing</p>
+            <ul class="pricing-features">
+              <li>Largest format, gallery-scale</li>
+              <li>Ideal for venues &amp; gifts</li>
+              <li>4K image upscaling included</li>
+              <li>Any photo quality accepted</li>
             </ul>
           </div>
         </div>
@@ -1782,24 +1793,61 @@
 
     showTab('home');
 
-    function submitContactForm() {
+    const WEB3FORMS_ACCESS_KEY = 'YOUR_WEB3FORMS_ACCESS_KEY';
+
+    async function submitContactForm() {
       const name = document.getElementById('c-name').value.trim();
       const email = document.getElementById('c-email').value.trim();
       const message = document.getElementById('c-message').value.trim();
       const succ = document.getElementById('contact-form-success');
+      const btn = document.getElementById('contact-submit-btn');
 
       if (!name) { document.getElementById('c-name').focus(); return; }
       if (!email) { document.getElementById('c-email').focus(); return; }
       if (!message) { document.getElementById('c-message').focus(); return; }
 
-      const subject = encodeURIComponent('Portrait inquiry from ' + name);
-      const body = encodeURIComponent(
-        message + '\n\n---\nFrom: ' + name + '\nEmail: ' + email
-      );
-      window.location.href = 'mailto:bashirsivona70@gmail.com?subject=' + subject + '&body=' + body;
+      btn.disabled = true;
+      btn.textContent = 'Sending...';
 
-      succ.style.display = 'block';
-      setTimeout(() => { succ.style.display = 'none'; }, 6000);
+      try {
+        const res = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            access_key: WEB3FORMS_ACCESS_KEY,
+            subject: 'Portrait inquiry from ' + name,
+            from_name: name,
+            name: name,
+            email: email,
+            message: message
+          })
+        });
+        const data = await res.json();
+
+        if (data.success) {
+          succ.textContent = '✓ Thanks, ' + name.split(' ')[0] + ' — your message is on its way. I\u2019ll reply by email soon.';
+          succ.style.display = 'block';
+          document.getElementById('c-name').value = '';
+          document.getElementById('c-email').value = '';
+          document.getElementById('c-message').value = '';
+        } else {
+          succ.textContent = '⚠ Something went wrong sending that. Please try emailing me directly instead.';
+          succ.style.background = '#fef2f2';
+          succ.style.borderLeftColor = '#dc2626';
+          succ.style.color = '#991b1b';
+          succ.style.display = 'block';
+        }
+      } catch (err) {
+        succ.textContent = '⚠ Something went wrong sending that. Please try emailing me directly instead.';
+        succ.style.background = '#fef2f2';
+        succ.style.borderLeftColor = '#dc2626';
+        succ.style.color = '#991b1b';
+        succ.style.display = 'block';
+      }
+
+      btn.disabled = false;
+      btn.textContent = '✉ Send Message';
+      setTimeout(() => { succ.style.display = 'none'; }, 8000);
     }
 
     let selectedStars = 0;
