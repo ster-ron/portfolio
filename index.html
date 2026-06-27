@@ -2,2329 +2,2073 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
-    <title>William Makori · The Voice of His Generation</title>
-
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Inter:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet" />
-
-    <!-- Font Awesome 6 -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-
-    <!-- Stripe.js -->
-    <script src="https://js.stripe.com/v3/"></script>
-
-    <style>
-        /* ===== RESET & BASE ===== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --primary: #1a1713;
-            --primary-light: #2c2823;
-            --accent: #b7a187;
-            --accent-light: #d4c5b4;
-            --bg-cream: #f6f2ed;
-            --bg-white: #ffffff;
-            --text-dark: #1a1713;
-            --text-medium: #4e453c;
-            --text-light: #8f8276;
-            --success: #00a859;
-            --radius: 1.8rem;
-            --shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.1);
-            --transition: 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            background: #f2eee9;
-            color: var(--text-dark);
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            line-height: 1.7;
-            padding: 1rem;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .portfolio {
-            max-width: 1140px;
-            width: 100%;
-            margin: 0 auto;
-            background: var(--bg-white);
-            border-radius: 2.5rem;
-            padding: 2.5rem 2rem;
-            box-shadow: var(--shadow);
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s ease;
-        }
-
-        .portfolio::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, var(--accent), var(--accent-light), var(--accent));
-            opacity: 0.7;
-        }
-
-        /* ===== SKIP LINK ===== */
-        .skip-link {
-            position: absolute;
-            top: -100%;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--primary);
-            color: #fff;
-            padding: 0.8rem 1.5rem;
-            border-radius: 0 0 1rem 1rem;
-            z-index: 1000;
-            text-decoration: none;
-            font-weight: 500;
-            transition: top 0.3s ease;
-        }
-
-        .skip-link:focus {
-            top: 0;
-        }
-
-        /* ===== HERO ===== */
-        .hero {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            gap: 2.5rem;
-            margin-bottom: 2.5rem;
-            padding-bottom: 2rem;
-            border-bottom: 1px solid #ede8e2;
-        }
-
-        .hero-image {
-            flex: 0 0 160px;
-            width: 160px;
-            height: 160px;
-            border-radius: 50%;
-            overflow: hidden;
-            box-shadow: 0 16px 32px -8px rgba(0, 0, 0, 0.12);
-            border: 4px solid #f5f0eb;
-            background: #d9cdbc;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: transform var(--transition), box-shadow var(--transition);
-            position: relative;
-            flex-shrink: 0;
-        }
-
-        .hero-image:hover {
-            transform: scale(1.03);
-            box-shadow: 0 24px 48px -12px rgba(0, 0, 0, 0.18);
-        }
-
-        .hero-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
-
-        .hero-image .fallback-icon {
-            font-size: 4rem;
-            color: #5c4f42;
-        }
-
-        .hero-text {
-            flex: 1;
-            min-width: 220px;
-        }
-
-        .hero-text .name-block {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 3.2rem;
-            font-weight: 700;
-            letter-spacing: -0.02em;
-            color: var(--text-dark);
-            line-height: 1.05;
-        }
-
-        .hero-text .name-block .highlight {
-            color: #a3846b;
-            font-weight: 500;
-            font-style: italic;
-            position: relative;
-        }
-
-        .hero-text .name-block .highlight::after {
-            content: '';
-            position: absolute;
-            bottom: 2px;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, #a3846b, transparent);
-            opacity: 0.3;
-            border-radius: 2px;
-        }
-
-        .hero-text .voice-tag {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: var(--primary);
-            color: #f5f0eb;
-            font-size: 0.7rem;
-            font-weight: 600;
-            letter-spacing: 1px;
-            padding: 0.35rem 1.2rem;
-            border-radius: 40px;
-            text-transform: uppercase;
-            margin: 0.4rem 0 0.5rem;
-        }
-
-        .hero-text .voice-tag i {
-            font-size: 0.6rem;
-            color: var(--accent-light);
-        }
-
-        .hero-text .tagline {
-            font-size: 0.95rem;
-            font-weight: 400;
-            color: var(--text-medium);
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            gap: 0.3rem 1rem;
-            margin: 0.2rem 0 0.4rem;
-        }
-
-        .hero-text .tagline i {
-            color: var(--accent);
-            font-size: 0.75rem;
-            margin-right: 0.15rem;
-            opacity: 0.7;
-        }
-
-        .hero-text .tagline .pill {
-            background: #f0ebe5;
-            padding: 0.05rem 1rem;
-            border-radius: 40px;
-            font-size: 0.7rem;
-            font-weight: 500;
-            color: #3a342e;
-        }
-
-        .hero-quote {
-            font-size: 1.05rem;
-            font-weight: 400;
-            color: #4a4036;
-            margin-top: 0.6rem;
-            padding-left: 1.2rem;
-            border-left: 4px solid var(--accent);
-            font-family: 'Cormorant Garamond', serif;
-            font-style: italic;
-            line-height: 1.5;
-        }
-
-        .hero-quote i {
-            color: var(--accent);
-            margin-right: 0.3rem;
-            opacity: 0.4;
-            font-size: 0.8rem;
-        }
-
-        .divider {
-            width: 60px;
-            height: 2px;
-            background: linear-gradient(90deg, var(--accent-light), transparent);
-            margin: 0.5rem 0 0.3rem;
-        }
-
-        /* ===== ABOUT SECTION ===== */
-        .about-section {
-            background: linear-gradient(135deg, #faf7f2 0%, #f6f2ed 100%);
-            border-radius: var(--radius);
-            padding: 2rem 2.2rem;
-            margin-bottom: 2.5rem;
-            border: 1px solid #ede8e2;
-            position: relative;
-        }
-
-        .about-section::before {
-            content: '“';
-            position: absolute;
-            top: -5px;
-            left: 15px;
-            font-size: 5rem;
-            color: var(--accent);
-            opacity: 0.15;
-            font-family: 'Cormorant Garamond', serif;
-        }
-
-        .about-grid {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 2rem;
-            align-items: start;
-        }
-
-        .about-text h2 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 2rem;
-            font-weight: 600;
-            color: var(--text-dark);
-            margin-bottom: 0.8rem;
-        }
-
-        .about-text h2 i {
-            color: var(--accent);
-            margin-right: 0.5rem;
-            opacity: 0.6;
-        }
-
-        .about-text p {
-            font-size: 1rem;
-            color: var(--text-medium);
-            margin-bottom: 0.8rem;
-            line-height: 1.8;
-        }
-
-        .about-text p strong {
-            color: var(--text-dark);
-            font-weight: 600;
-        }
-
-        .about-text .signature {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.6rem;
-            font-style: italic;
-            color: var(--accent);
-            margin-top: 0.5rem;
-        }
-
-        .about-stats {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 0.8rem;
-        }
-
-        .stat-item {
-            background: var(--bg-white);
-            padding: 1.2rem 0.8rem;
-            border-radius: 1.2rem;
-            text-align: center;
-            border: 1px solid #ede8e2;
-            transition: transform var(--transition), box-shadow var(--transition);
-        }
-
-        .stat-item:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 16px -8px rgba(0, 0, 0, 0.06);
-        }
-
-        .stat-item .stat-number {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--text-dark);
-            display: block;
-        }
-
-        .stat-item .stat-label {
-            font-size: 0.7rem;
-            color: var(--text-light);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            font-weight: 500;
-        }
-
-        .stat-item i {
-            color: var(--accent);
-            font-size: 1.2rem;
-            margin-bottom: 0.2rem;
-            display: block;
-        }
-
-        /* ===== PERFORMANCE STYLE ===== */
-        .style-section {
-            margin-bottom: 2.5rem;
-        }
-
-        .style-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: 1rem;
-        }
-
-        .style-card {
-            background: #fcfaf7;
-            padding: 1.2rem 1rem;
-            border-radius: 1.2rem;
-            text-align: center;
-            border: 1px solid #ede8e2;
-            transition: transform var(--transition), border-color var(--transition);
-        }
-
-        .style-card:hover {
-            transform: translateY(-3px);
-            border-color: var(--accent);
-        }
-
-        .style-card i {
-            font-size: 1.8rem;
-            color: var(--accent);
-            margin-bottom: 0.3rem;
-            display: block;
-        }
-
-        .style-card h4 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--text-dark);
-        }
-
-        .style-card p {
-            font-size: 0.75rem;
-            color: var(--text-light);
-            margin-top: 0.1rem;
-        }
-
-        /* ===== FEATURED PERFORMANCE ===== */
-        .performance-feature {
-            background: var(--primary);
-            color: #f5f0eb;
-            border-radius: var(--radius);
-            padding: 2rem 2.2rem;
-            margin-bottom: 2.5rem;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            gap: 2rem;
-            border-left: 5px solid var(--accent);
-        }
-
-        .performance-feature .perf-text {
-            flex: 1;
-        }
-
-        .performance-feature .perf-text h3 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.6rem;
-            font-weight: 600;
-            margin-bottom: 0.3rem;
-        }
-
-        .performance-feature .perf-text p {
-            font-weight: 300;
-            opacity: 0.85;
-            font-size: 0.95rem;
-        }
-
-        .performance-feature .perf-text .perf-meta {
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-            opacity: 0.6;
-            margin-top: 0.3rem;
-        }
-
-        .performance-feature .perf-btn {
-            background: transparent;
-            color: #f5f0eb;
-            padding: 0.6rem 1.6rem;
-            border-radius: 40px;
-            border: 1.5px solid var(--accent);
-            font-family: 'Inter', sans-serif;
-            font-weight: 500;
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: all var(--transition);
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            text-decoration: none;
-            flex-shrink: 0;
-        }
-
-        .performance-feature .perf-btn:hover {
-            background: var(--accent);
-            color: var(--primary);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px -6px rgba(183, 161, 135, 0.3);
-        }
-
-        .performance-feature .perf-btn:active {
-            transform: scale(0.95);
-        }
-
-        /* ===== SECTION TITLES ===== */
-        .section-title {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 2rem;
-            font-weight: 600;
-            color: var(--text-dark);
-            margin: 2.2rem 0 1.5rem 0;
-            letter-spacing: -0.3px;
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
-        }
-
-        .section-title i {
-            color: var(--accent);
-            font-size: 1.3rem;
-            opacity: 0.6;
-        }
-
-        .section-title .sub {
-            font-family: 'Inter', sans-serif;
-            font-size: 0.7rem;
-            font-weight: 400;
-            color: var(--text-light);
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-        }
-
-        .section-title .line {
-            flex: 1;
-            height: 1px;
-            background: linear-gradient(90deg, #e8e0d8, transparent);
-            margin-left: 0.3rem;
-        }
-
-        /* ===== POETRY GRID ===== */
-        .poetry-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .poem-card {
-            background: #fcfaf7;
-            border-radius: var(--radius);
-            padding: 1.5rem 1.5rem 1.3rem;
-            border: 1px solid #ede8e2;
-            transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
-            position: relative;
-        }
-
-        .poem-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, var(--accent), var(--accent-light));
-            border-radius: var(--radius) var(--radius) 0 0;
-            opacity: 0;
-            transition: opacity var(--transition);
-        }
-
-        .poem-card:hover::before {
-            opacity: 1;
-        }
-
-        .poem-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 16px 32px -12px rgba(0, 0, 0, 0.08);
-            border-color: #d7cbbc;
-        }
-
-        .poem-card h3 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: var(--text-dark);
-            letter-spacing: -0.3px;
-        }
-
-        .poem-card .poem-excerpt {
-            font-size: 0.9rem;
-            color: #3d3832;
-            margin: 0.4rem 0 0.8rem;
-            font-style: italic;
-            border-left: 3px solid #dacfc2;
-            padding-left: 0.8rem;
-            font-weight: 400;
-            line-height: 1.5;
-            font-family: 'Cormorant Garamond', serif;
-        }
-
-        .poem-card .meta {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.7rem;
-            color: var(--text-light);
-            border-top: 1px solid #ede8e2;
-            padding-top: 0.6rem;
-            margin-top: 0.1rem;
-            font-weight: 400;
-        }
-
-        .poem-card .meta i {
-            margin-right: 0.2rem;
-            color: var(--accent);
-            font-size: 0.65rem;
-        }
-
-        /* ===== SPOKEN WORD GRID ===== */
-        .spoken-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
-            gap: 1.5rem;
-            margin: 1.2rem 0 0.3rem;
-        }
-
-        .spoken-item {
-            background: #f6f2ed;
-            padding: 1.4rem 1.4rem 1.5rem;
-            border-radius: var(--radius);
-            transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
-            border-bottom: 3px solid transparent;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
-            cursor: default;
-        }
-
-        .spoken-item:hover {
-            background: #efe8e0;
-            border-bottom-color: var(--accent);
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px -8px rgba(0, 0, 0, 0.05);
-        }
-
-        .spoken-item i {
-            font-size: 1.6rem;
-            color: #7b6b5c;
-            margin-bottom: 0.2rem;
-            display: inline-block;
-            opacity: 0.8;
-        }
-
-        .spoken-item h4 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.3rem;
-            font-weight: 600;
-            color: var(--text-dark);
-            letter-spacing: -0.2px;
-        }
-
-        .spoken-item p {
-            font-size: 0.85rem;
-            font-weight: 400;
-            color: #46403a;
-        }
-
-        .spoken-item .small-meta {
-            font-size: 0.6rem;
-            text-transform: uppercase;
-            letter-spacing: 0.6px;
-            color: var(--text-light);
-            margin-top: 0.4rem;
-            font-weight: 500;
-        }
-
-        .spoken-item .small-meta i {
-            font-size: 0.55rem;
-            margin-right: 0.15rem;
-            color: var(--accent);
-        }
-
-        /* ===== STORE SECTION (Support) ===== */
-        .store-section {
-            background: linear-gradient(135deg, #faf7f2 0%, #f6f2ed 100%);
-            border-radius: var(--radius);
-            padding: 2rem 2rem 1.8rem;
-            margin: 2.5rem 0 1.5rem;
-            border: 1px solid #ede8e2;
-        }
-
-        .store-section .store-header {
-            text-align: center;
-            margin-bottom: 1.8rem;
-        }
-
-        .store-section .store-header h2 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 2rem;
-            font-weight: 600;
-            color: var(--text-dark);
-        }
-
-        .store-section .store-header p {
-            color: var(--text-medium);
-            font-size: 0.95rem;
-            max-width: 600px;
-            margin: 0.3rem auto 0;
-        }
-
-        .store-section .store-header p i {
-            color: var(--accent);
-            margin: 0 0.2rem;
-        }
-
-        .monetization-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .product-card {
-            background: var(--bg-white);
-            border-radius: var(--radius);
-            padding: 1.4rem 1.4rem 1.2rem;
-            border: 1px solid #ede8e2;
-            transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
-            position: relative;
-        }
-
-        .product-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, var(--accent), var(--accent-light));
-            border-radius: var(--radius) var(--radius) 0 0;
-            opacity: 0;
-            transition: opacity var(--transition);
-        }
-
-        .product-card:hover::before {
-            opacity: 1;
-        }
-
-        .product-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 16px 32px -12px rgba(0, 0, 0, 0.08);
-            border-color: #d7cbbc;
-        }
-
-        .product-card .product-icon {
-            font-size: 1.6rem;
-            color: var(--accent);
-            margin-bottom: 0.2rem;
-        }
-
-        .product-card h3 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.3rem;
-            font-weight: 600;
-            color: var(--text-dark);
-        }
-
-        .product-card .product-desc {
-            font-size: 0.8rem;
-            color: var(--text-medium);
-            font-weight: 400;
-            margin: 0.2rem 0 0.4rem;
-            line-height: 1.4;
-        }
-
-        .product-card .product-price {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--text-dark);
-            font-family: 'Cormorant Garamond', serif;
-            margin: 0.2rem 0 0.6rem;
-        }
-
-        .product-card .product-price span {
-            font-size: 0.75rem;
-            font-weight: 400;
-            color: var(--text-light);
-            font-family: 'Inter', sans-serif;
-        }
-
-        .product-card .payment-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 0.4rem;
-        }
-
-        .product-card .buy-btn {
-            padding: 0.5rem 1rem;
-            border-radius: 40px;
-            border: none;
-            font-family: 'Inter', sans-serif;
-            font-weight: 500;
-            font-size: 0.75rem;
-            cursor: pointer;
-            transition: all var(--transition);
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.4rem;
-            width: 100%;
-            min-height: 40px;
-        }
-
-        .product-card .buy-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px -6px rgba(0, 0, 0, 0.12);
-        }
-
-        .product-card .buy-btn:active {
-            transform: scale(0.97);
-        }
-
-        .product-card .buy-btn i {
-            font-size: 0.7rem;
-        }
-
-        .product-card .buy-btn.mpesa {
-            background: var(--success);
-            color: #fff;
-        }
-
-        .product-card .buy-btn.mpesa:hover {
-            background: #008f4b;
-        }
-
-        .product-card .buy-btn.stripe {
-            background: #635bff;
-            color: #fff;
-        }
-
-        .product-card .buy-btn.stripe:hover {
-            background: #4f47e6;
-        }
-
-        .product-card .buy-btn.loading {
-            opacity: 0.7;
-            cursor: wait;
-            pointer-events: none;
-        }
-
-        .product-card .badge {
-            position: absolute;
-            top: 0.6rem;
-            right: 0.6rem;
-            background: var(--accent);
-            color: #fff;
-            font-size: 0.5rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            padding: 0.1rem 0.6rem;
-            border-radius: 40px;
-        }
-
-        /* ===== TIP JAR ===== */
-        .tip-section {
-            background: linear-gradient(135deg, #f6f2ed 0%, #f0ebe5 100%);
-            border-radius: var(--radius);
-            padding: 1.4rem 1.8rem;
-            margin: 1.5rem 0 1.2rem;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: space-between;
-            gap: 1rem;
-            border: 1px solid #e8e0d8;
-        }
-
-        .tip-section .tip-text {
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-        }
-
-        .tip-section .tip-text i {
-            font-size: 1.6rem;
-            color: var(--accent);
-            opacity: 0.7;
-            flex-shrink: 0;
-        }
-
-        .tip-section .tip-text .tip-message {
-            font-size: 0.9rem;
-            color: var(--text-medium);
-        }
-
-        .tip-section .tip-text .tip-message strong {
-            color: var(--text-dark);
-            font-weight: 600;
-        }
-
-        .tip-section .tip-buttons {
-            display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-        }
-
-        .tip-section .tip-buttons .tip-btn {
-            background: var(--primary);
-            color: #f5f0eb;
-            padding: 0.4rem 1rem;
-            border-radius: 40px;
-            border: none;
-            font-family: 'Inter', sans-serif;
-            font-weight: 500;
-            font-size: 0.75rem;
-            cursor: pointer;
-            transition: all var(--transition);
-            display: inline-flex;
-            align-items: center;
-            gap: 0.3rem;
-            min-height: 36px;
-        }
-
-        .tip-section .tip-buttons .tip-btn:hover {
-            background: var(--primary-light);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px -6px rgba(0, 0, 0, 0.12);
-        }
-
-        .tip-section .tip-buttons .tip-btn:active {
-            transform: scale(0.95);
-        }
-
-        .tip-section .tip-buttons .tip-btn.outline {
-            background: transparent;
-            color: var(--text-dark);
-            border: 1.5px solid #d4c5b4;
-        }
-
-        .tip-section .tip-buttons .tip-btn.outline:hover {
-            background: #f0ebe5;
-            border-color: var(--accent);
-        }
-
-        /* ===== BOOKING SECTION ===== */
-        .booking-section {
-            background: #fcfaf7;
-            border-radius: var(--radius);
-            padding: 1.4rem 1.8rem;
-            margin: 1.2rem 0 2rem;
-            border: 1px solid #ede8e2;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: space-between;
-            gap: 1rem;
-            transition: border-color var(--transition);
-        }
-
-        .booking-section:hover {
-            border-color: #d7cbbc;
-        }
-
-        .booking-section .booking-text {
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-        }
-
-        .booking-section .booking-text i {
-            font-size: 1.6rem;
-            color: var(--accent);
-            opacity: 0.7;
-            flex-shrink: 0;
-        }
-
-        .booking-section .booking-text .booking-message {
-            font-size: 0.9rem;
-            color: var(--text-medium);
-        }
-
-        .booking-section .booking-text .booking-message strong {
-            color: var(--text-dark);
-            font-weight: 600;
-        }
-
-        .booking-section .booking-btn {
-            background: transparent;
-            color: var(--text-dark);
-            padding: 0.45rem 1.4rem;
-            border-radius: 40px;
-            border: 1.5px solid var(--text-dark);
-            font-family: 'Inter', sans-serif;
-            font-weight: 500;
-            font-size: 0.8rem;
-            cursor: pointer;
-            transition: all var(--transition);
-            display: inline-flex;
-            align-items: center;
-            gap: 0.4rem;
-            text-decoration: none;
-            min-height: 40px;
-        }
-
-        .booking-section .booking-btn:hover {
-            background: var(--primary);
-            color: #f5f0eb;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px -6px rgba(0, 0, 0, 0.12);
-        }
-
-        .booking-section .booking-btn:active {
-            transform: scale(0.95);
-        }
-
-        /* ===== FEATURED QUOTE ===== */
-        .featured-quote {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-            color: #f5f0eb;
-            border-radius: 2rem;
-            padding: 2.2rem 2.5rem;
-            margin: 2.8rem 0 1.8rem;
-            text-align: center;
-            border-left: 5px solid var(--accent);
-            box-shadow: 0 16px 32px -12px rgba(0, 0, 0, 0.2);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .featured-quote::before {
-            content: '❝';
-            position: absolute;
-            top: -15px;
-            left: 15px;
-            font-size: 7rem;
-            opacity: 0.04;
-            font-family: 'Cormorant Garamond', serif;
-            color: #fff;
-        }
-
-        .featured-quote i {
-            color: #c9b7a4;
-            font-size: 1.4rem;
-            opacity: 0.4;
-            margin: 0 0.3rem;
-        }
-
-        .featured-quote p {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.5rem;
-            font-weight: 400;
-            line-height: 1.4;
-            letter-spacing: 0.3px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .featured-quote .attribution {
-            font-family: 'Inter', sans-serif;
-            font-size: 0.65rem;
-            font-weight: 300;
-            color: #c5b7a8;
-            margin-top: 0.6rem;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-
-        /* ===== FOOTER ===== */
-        .footer {
-            margin-top: 2.8rem;
-            padding-top: 1.6rem;
-            border-top: 1px solid #ede8e2;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .footer .socials {
-            display: flex;
-            gap: 1.2rem;
-        }
-
-        .footer .socials a {
-            color: #4c443c;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            background: #f6f2ed;
-            transition: all var(--transition);
-            font-size: 1rem;
-        }
-
-        .footer .socials a:hover {
-            color: var(--text-dark);
-            background: #ede8e2;
-            transform: translateY(-3px);
-            box-shadow: 0 6px 12px -6px rgba(0, 0, 0, 0.06);
-        }
-
-        .footer .socials a:active {
-            transform: scale(0.92);
-        }
-
-        .footer .copy {
-            font-size: 0.8rem;
-            color: var(--text-light);
-            font-weight: 400;
-        }
-
-        .footer .copy i {
-            margin: 0 0.2rem;
-            color: var(--accent);
-            font-size: 0.65rem;
-        }
-
-        /* ===== M-PESA MODAL ===== */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(6px);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-            padding: 1.5rem;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .modal-overlay.active {
-            display: flex;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-
-            to {
-                opacity: 1;
-            }
-        }
-
-        .modal {
-            background: var(--bg-white);
-            border-radius: 2rem;
-            padding: 2.2rem 2rem;
-            max-width: 440px;
-            width: 100%;
-            box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.25);
-            animation: slideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            position: relative;
-        }
-
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px) scale(0.95);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-        }
-
-        .modal .modal-close {
-            position: absolute;
-            top: 0.8rem;
-            right: 1rem;
-            background: none;
-            border: none;
-            font-size: 1.6rem;
-            color: var(--text-light);
-            cursor: pointer;
-            transition: color var(--transition);
-            padding: 0.3rem;
-            line-height: 1;
-        }
-
-        .modal .modal-close:hover {
-            color: var(--text-dark);
-        }
-
-        .modal .modal-icon {
-            text-align: center;
-            font-size: 2.8rem;
-            color: var(--success);
-            margin-bottom: 0.3rem;
-        }
-
-        .modal h2 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.6rem;
-            text-align: center;
-            color: var(--text-dark);
-            margin-bottom: 0.2rem;
-        }
-
-        .modal .modal-sub {
-            text-align: center;
-            color: var(--text-medium);
-            font-size: 0.9rem;
-            margin-bottom: 1.2rem;
-        }
-
-        .modal .modal-sub strong {
-            color: var(--text-dark);
-        }
-
-        .modal .modal-amount {
-            background: #f6f2ed;
-            padding: 0.7rem 1rem;
-            border-radius: 1rem;
-            text-align: center;
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--text-dark);
-            margin-bottom: 1rem;
-        }
-
-        .modal .modal-amount span {
-            font-weight: 400;
-            color: var(--text-light);
-            font-size: 0.8rem;
-        }
-
-        .modal .form-group {
-            margin-bottom: 1rem;
-        }
-
-        .modal .form-group label {
-            display: block;
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: var(--text-dark);
-            margin-bottom: 0.2rem;
-        }
-
-        .modal .form-group label i {
-            color: var(--accent);
-            margin-right: 0.3rem;
-        }
-
-        .modal .form-group input {
-            width: 100%;
-            padding: 0.7rem 1rem;
-            border: 2px solid #ede8e2;
-            border-radius: 1rem;
-            font-family: 'Inter', sans-serif;
-            font-size: 1rem;
-            transition: border-color var(--transition);
-            background: #fcfaf7;
-            min-height: 48px;
-        }
-
-        .modal .form-group input:focus {
-            outline: none;
-            border-color: var(--accent);
-            background: #fff;
-        }
-
-        .modal .form-group input::placeholder {
-            color: #b7afa5;
-        }
-
-        .modal .form-group .helper-text {
-            color: var(--text-light);
-            font-size: 0.65rem;
-            display: block;
-            margin-top: 0.2rem;
-        }
-
-        .modal .pay-btn {
-            width: 100%;
-            padding: 0.8rem;
-            background: var(--success);
-            color: #fff;
-            border: none;
-            border-radius: 1rem;
-            font-family: 'Inter', sans-serif;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all var(--transition);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            min-height: 52px;
-        }
-
-        .modal .pay-btn:hover {
-            background: #008f4b;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px -8px rgba(0, 168, 89, 0.3);
-        }
-
-        .modal .pay-btn:active {
-            transform: scale(0.97);
-        }
-
-        .modal .pay-btn.loading {
-            opacity: 0.7;
-            cursor: wait;
-            pointer-events: none;
-        }
-
-        .modal .modal-footer-text {
-            text-align: center;
-            font-size: 0.65rem;
-            color: var(--text-light);
-            margin-top: 0.8rem;
-        }
-
-        .modal .modal-footer-text i {
-            color: var(--success);
-        }
-
-        /* ===== TOAST ===== */
-        .toast {
-            position: fixed;
-            bottom: 1.5rem;
-            right: 1.5rem;
-            background: var(--primary);
-            color: #f5f0eb;
-            padding: 0.8rem 1.5rem;
-            border-radius: 1rem;
-            box-shadow: 0 12px 30px -8px rgba(0, 0, 0, 0.2);
-            font-family: 'Inter', sans-serif;
-            font-size: 0.85rem;
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
-            transform: translateY(120%);
-            opacity: 0;
-            transition: transform 0.4s ease, opacity 0.4s ease;
-            z-index: 2000;
-            border-left: 4px solid var(--accent);
-            max-width: 400px;
-            width: calc(100% - 2rem);
-        }
-
-        .toast.show {
-            transform: translateY(0);
-            opacity: 1;
-        }
-
-        .toast i {
-            color: var(--accent);
-            font-size: 1.1rem;
-            flex-shrink: 0;
-        }
-
-        /* ===== RESPONSIVE ===== */
-        @media (max-width: 800px) {
-            .portfolio {
-                padding: 1.8rem 1.2rem;
-                border-radius: 2rem;
-            }
-
-            .hero-text .name-block {
-                font-size: 2.6rem;
-            }
-
-            .hero-image {
-                flex: 0 0 130px;
-                width: 130px;
-                height: 130px;
-            }
-
-            .about-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .about-stats {
-                grid-template-columns: 1fr 1fr;
-            }
-
-            .performance-feature {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .tip-section {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .booking-section {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .featured-quote p {
-                font-size: 1.3rem;
-            }
-
-            .featured-quote {
-                padding: 1.8rem 1.5rem;
-            }
-
-            .monetization-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-
-            .modal {
-                padding: 1.8rem 1.5rem;
-                margin: 1rem;
-            }
-        }
-
-        @media (max-width: 600px) {
-            body {
-                padding: 0.5rem;
-            }
-
-            .portfolio {
-                padding: 1.2rem 0.8rem;
-                border-radius: 1.5rem;
-            }
-
-            .hero {
-                flex-direction: column;
-                align-items: center;
-                text-align: center;
-                gap: 1.5rem;
-                padding-bottom: 1.5rem;
-            }
-
-            .hero-text .name-block {
-                font-size: 2.2rem;
-            }
-
-            .hero-text .tagline {
-                justify-content: center;
-                font-size: 0.85rem;
-            }
-
-            .hero-quote {
-                border-left: none;
-                padding-left: 0;
-                text-align: center;
-                font-size: 0.95rem;
-            }
-
-            .divider {
-                margin: 0.4rem auto;
-            }
-
-            .hero-image {
-                flex: 0 0 110px;
-                width: 110px;
-                height: 110px;
-            }
-
-            .section-title {
-                font-size: 1.6rem;
-            }
-
-            .section-title .line {
-                display: none;
-            }
-
-            .about-section {
-                padding: 1.5rem 1.2rem;
-            }
-
-            .about-text h2 {
-                font-size: 1.6rem;
-            }
-
-            .about-stats {
-                grid-template-columns: 1fr 1fr;
-                gap: 0.5rem;
-            }
-
-            .stat-item {
-                padding: 0.8rem 0.5rem;
-            }
-
-            .stat-item .stat-number {
-                font-size: 1.4rem;
-            }
-
-            .style-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-
-            .monetization-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .poetry-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .spoken-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-
-            .featured-quote p {
-                font-size: 1.1rem;
-            }
-
-            .featured-quote {
-                padding: 1.4rem 1rem;
-                border-left-width: 4px;
-            }
-
-            .footer {
-                flex-direction: column;
-                align-items: center;
-                text-align: center;
-                gap: 0.8rem;
-            }
-
-            .footer .socials {
-                gap: 0.8rem;
-            }
-
-            .footer .socials a {
-                width: 34px;
-                height: 34px;
-                font-size: 0.9rem;
-            }
-
-            .tip-section .tip-text {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 0.3rem;
-            }
-
-            .tip-section .tip-buttons {
-                width: 100%;
-            }
-
-            .tip-section .tip-buttons .tip-btn {
-                flex: 1;
-                justify-content: center;
-                font-size: 0.7rem;
-                padding: 0.35rem 0.7rem;
-            }
-
-            .booking-section .booking-text {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 0.3rem;
-            }
-
-            .booking-section .booking-btn {
-                width: 100%;
-                justify-content: center;
-            }
-
-            .product-card .badge {
-                font-size: 0.45rem;
-                padding: 0.1rem 0.5rem;
-            }
-
-            .store-section {
-                padding: 1.5rem 1rem;
-            }
-
-            .store-section .store-header h2 {
-                font-size: 1.6rem;
-            }
-
-            .performance-feature {
-                padding: 1.5rem 1.2rem;
-            }
-
-            .performance-feature .perf-text h3 {
-                font-size: 1.3rem;
-            }
-
-            .modal {
-                padding: 1.5rem 1.2rem;
-                border-radius: 1.5rem;
-            }
-
-            .modal h2 {
-                font-size: 1.3rem;
-            }
-
-            .toast {
-                bottom: 0.8rem;
-                right: 0.8rem;
-                left: 0.8rem;
-                max-width: none;
-                font-size: 0.8rem;
-                padding: 0.7rem 1rem;
-            }
-        }
-
-        @media (max-width: 400px) {
-            .hero-text .name-block {
-                font-size: 1.8rem;
-            }
-
-            .hero-text .voice-tag {
-                font-size: 0.6rem;
-                padding: 0.25rem 0.9rem;
-            }
-
-            .hero-text .tagline .pill {
-                font-size: 0.6rem;
-                padding: 0.05rem 0.6rem;
-            }
-
-            .style-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .spoken-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .about-stats {
-                grid-template-columns: 1fr 1fr;
-            }
-
-            .product-card {
-                padding: 1rem 1rem 0.8rem;
-            }
-
-            .product-card h3 {
-                font-size: 1.1rem;
-            }
-
-            .product-card .product-price {
-                font-size: 1rem;
-            }
-
-            .featured-quote p {
-                font-size: 1rem;
-            }
-
-            .modal .modal-amount {
-                font-size: 1rem;
-                padding: 0.5rem 0.8rem;
-            }
-
-            .modal .form-group input {
-                font-size: 0.9rem;
-                padding: 0.6rem 0.8rem;
-                min-height: 42px;
-            }
-
-            .modal .pay-btn {
-                font-size: 0.9rem;
-                padding: 0.6rem;
-                min-height: 44px;
-            }
-        }
-
-        /* ===== REDUCED MOTION ===== */
-        @media (prefers-reduced-motion: reduce) {
-            * {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
-                scroll-behavior: auto !important;
-            }
-        }
-
-        /* ===== HIGH CONTRAST FOCUS ===== */
-        :focus-visible {
-            outline: 3px solid var(--accent);
-            outline-offset: 2px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bash Arts — Bashir Yaqub</title>
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --ink: #1a1025;
+      --cream: #fdf8f0;
+      --warm: #fff8ee;
+      --a1: #e8623a;
+      --a2: #7c3aed;
+      --a3: #0ea5e9;
+      --a4: #f59e0b;
+      --a5: #10b981;
+      --lpur: #f3eeff;
+      --lblu: #f0f9ff;
+      --serif: 'Georgia', 'Times New Roman', serif;
+      --sans: 'Helvetica Neue', Arial, sans-serif;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--sans);
+      background: var(--cream);
+      color: var(--ink);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 200;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.6rem 5vw;
+      background: var(--ink);
+      border-bottom: 3px solid var(--a1);
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      text-decoration: none;
+    }
+
+    .nav-logo img {
+      height: clamp(36px, 6vw, 48px);
+      width: auto;
+      border-radius: 6px;
+      object-fit: contain;
+    }
+
+    .nav-logo-name {
+      font-family: var(--serif);
+      font-size: clamp(0.85rem, 2.2vw, 1rem);
+      color: var(--cream);
+      letter-spacing: 0.04em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 0.2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.6);
+      text-decoration: none;
+      padding: 0.4rem 0.75rem;
+      border-radius: 2rem;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .nav-links a:hover {
+      background: var(--a1);
+      color: #fff;
+    }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 6px;
+      border: none;
+      background: none;
+    }
+
+    .hamburger span {
+      width: 22px;
+      height: 2px;
+      background: var(--cream);
+      border-radius: 2px;
+      display: block;
+    }
+
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: var(--ink);
+      z-index: 199;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 2.5rem;
+    }
+
+    .mobile-menu.open {
+      display: flex;
+    }
+
+    .mobile-menu a {
+      font-size: clamp(1.4rem, 6vw, 2rem);
+      font-family: var(--serif);
+      color: var(--cream);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .mobile-menu a:hover {
+      color: var(--a1);
+    }
+
+    .mobile-close {
+      position: absolute;
+      top: 1.25rem;
+      right: 5vw;
+      font-size: 2rem;
+      color: var(--cream);
+      cursor: pointer;
+      background: none;
+      border: none;
+      line-height: 1;
+    }
+
+    /* HERO */
+    .hero {
+      padding: clamp(5.5rem, 15vw, 9rem) 5vw clamp(3rem, 8vw, 5rem);
+      background: var(--ink);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-bg-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: var(--serif);
+      font-size: clamp(5rem, 22vw, 18rem);
+      font-weight: bold;
+      color: rgba(255, 255, 255, 0.03);
+      white-space: nowrap;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .hero-inner {
+      max-width: 960px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .hero-label {
+      display: inline-block;
+      font-size: clamp(0.65rem, 2vw, 0.75rem);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--a1);
+      background: rgba(232, 98, 58, 0.12);
+      padding: 0.35rem 0.9rem;
+      border-radius: 2rem;
+      border: 1px solid rgba(232, 98, 58, 0.3);
+      margin-bottom: 1.25rem;
+    }
+
+    .hero h1 {
+      font-family: var(--serif);
+      font-size: clamp(2.2rem, 8vw, 6rem);
+      font-weight: normal;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      color: var(--cream);
+      margin-bottom: 1.25rem;
+    }
+
+    .hero h1 em {
+      color: var(--a1);
+      font-style: normal;
+    }
+
+    .hero-sub {
+      font-size: clamp(0.9rem, 2.5vw, 1rem);
+      color: rgba(255, 255, 255, 0.6);
+      max-width: 480px;
+      line-height: 1.8;
+      margin-bottom: 2rem;
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: clamp(0.75rem, 2vw, 0.9rem) clamp(1.25rem, 4vw, 2rem);
+      background: var(--a1);
+      color: #fff;
+      text-decoration: none;
+      font-size: clamp(0.75rem, 2vw, 0.85rem);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border-radius: 0.3rem;
+      transition: opacity 0.2s;
+      font-weight: 500;
+    }
+
+    .hero-cta:hover {
+      opacity: 0.85;
+    }
+
+    .hero-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 2.5rem;
+    }
+
+    .chip {
+      font-size: clamp(0.65rem, 1.8vw, 0.72rem);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.28rem 0.75rem;
+      border-radius: 2rem;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: rgba(255, 255, 255, 0.45);
+    }
+
+    /* GALLERY */
+    .gallery-section {
+      padding: clamp(3rem, 8vw, 5rem) 5vw;
+      background: var(--warm);
+    }
+
+    .section-header {
+      max-width: 960px;
+      margin: 0 auto clamp(1.5rem, 4vw, 2.5rem);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .section-heading {
+      font-family: var(--serif);
+      font-size: clamp(1.4rem, 4vw, 1.8rem);
+      font-weight: normal;
+    }
+
+    .section-tag {
+      font-size: clamp(0.65rem, 1.8vw, 0.72rem);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--a2);
+      background: var(--lpur);
+      padding: 0.3rem 0.75rem;
+      border-radius: 2rem;
+    }
+
+    .gallery-grid {
+      max-width: 960px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: clamp(0.6rem, 2vw, 1.25rem);
+    }
+
+    .artwork {
+      position: relative;
+      overflow: hidden;
+      border-radius: 0.5rem;
+      background: #ddd;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      transition: box-shadow 0.3s, transform 0.3s;
+    }
+
+    .artwork:first-child {
+      grid-column: span 2;
+    }
+
+    .artwork:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .artwork img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      min-height: clamp(180px, 25vw, 300px);
+      transition: transform 0.6s ease;
+    }
+
+    .artwork:first-child img {
+      min-height: clamp(220px, 30vw, 360px);
+    }
+
+    .artwork:hover img {
+      transform: scale(1.04);
+    }
+
+    .artwork-caption {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: clamp(1.5rem, 4vw, 2.5rem) clamp(0.75rem, 2vw, 1.25rem) clamp(0.75rem, 2vw, 1.25rem);
+      background: linear-gradient(to top, rgba(26, 16, 37, 0.82) 0%, transparent 100%);
+      color: #fff;
+    }
+
+    .caption-title {
+      font-family: var(--serif);
+      font-size: clamp(0.85rem, 2.5vw, 1.05rem);
+      font-weight: normal;
+      margin-bottom: 0.2rem;
+    }
+
+    .caption-meta {
+      font-size: clamp(0.6rem, 1.6vw, 0.7rem);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      opacity: 0.7;
+    }
+
+    .artwork-badge {
+      position: absolute;
+      top: 0.75rem;
+      left: 0.75rem;
+      font-size: clamp(0.55rem, 1.5vw, 0.65rem);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.22rem 0.55rem;
+      border-radius: 2rem;
+      font-weight: 700;
+    }
+
+    .badge-orange {
+      background: var(--a1);
+      color: #fff;
+    }
+
+    .badge-purple {
+      background: var(--a2);
+      color: #fff;
+    }
+
+    .badge-blue {
+      background: var(--a3);
+      color: #fff;
+    }
+
+    /* WORK SUB-TABS */
+    .work-subtabs {
+      max-width: 960px;
+      margin: 0 auto clamp(1.25rem, 3vw, 1.75rem);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .work-subtab-btn {
+      font-family: var(--sans);
+      font-size: clamp(0.72rem, 1.8vw, 0.8rem);
+      letter-spacing: 0.04em;
+      padding: 0.45rem 1rem;
+      border-radius: 2rem;
+      border: 1.5px solid var(--lpur);
+      background: #fff;
+      color: var(--ink);
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s, border-color 0.2s;
+    }
+
+    .work-subtab-btn:hover {
+      border-color: var(--a2);
+    }
+
+    .work-subtab-btn.active {
+      background: var(--a2);
+      border-color: var(--a2);
+      color: #fff;
+    }
+
+    .artwork.hidden-work {
+      display: none;
+    }
+
+    .work-empty-msg,
+    .work-loading-msg {
+      color: #888;
+      font-size: 0.9rem;
+      font-style: italic;
+      padding: 1rem 0;
+      grid-column: 1/-1;
+    }
+
+    /* ── BEFORE / AFTER FEATURE ── */
+    .transform-section {
+      padding: clamp(3rem, 8vw, 5rem) 5vw;
+      background: var(--ink);
+    }
+
+    .transform-inner {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .transform-header {
+      margin-bottom: clamp(1.5rem, 4vw, 2.5rem);
+    }
+
+    .transform-label {
+      display: inline-block;
+      font-size: clamp(0.65rem, 1.8vw, 0.72rem);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--a4);
+      background: rgba(245, 158, 11, 0.15);
+      padding: 0.3rem 0.8rem;
+      border-radius: 2rem;
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      margin-bottom: 1rem;
+    }
+
+    .transform-header h2 {
+      font-family: var(--serif);
+      font-size: clamp(1.6rem, 4.5vw, 2.4rem);
+      font-weight: normal;
+      color: var(--cream);
+      line-height: 1.15;
+      margin-bottom: 0.75rem;
+    }
+
+    .transform-header h2 em {
+      color: var(--a4);
+      font-style: normal;
+    }
+
+    .transform-header p {
+      color: rgba(255, 255, 255, 0.55);
+      font-size: clamp(0.88rem, 2.2vw, 0.98rem);
+      line-height: 1.8;
+      max-width: 560px;
+    }
+
+    .transform-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(1rem, 3vw, 2rem);
+      align-items: start;
+      margin-bottom: clamp(2rem, 5vw, 3rem);
+    }
+
+    .transform-card {
+      border-radius: 0.75rem;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .transform-card img {
+      width: 100%;
+      display: block;
+      object-fit: cover;
+      aspect-ratio: 3/4;
+    }
+
+    .transform-badge {
+      position: absolute;
+      top: 0.75rem;
+      left: 0.75rem;
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-weight: 700;
+      padding: 0.25rem 0.6rem;
+      border-radius: 2rem;
+    }
+
+    .badge-before {
+      background: rgba(0, 0, 0, 0.55);
+      color: rgba(255, 255, 255, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .badge-after {
+      background: var(--a4);
+      color: var(--ink);
+    }
+
+    .transform-arrow {
+      display: none;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 2rem;
+      color: var(--a4);
+    }
+
+    .transform-perks {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 200px), 1fr));
+      gap: 1rem;
+    }
+
+    .perk {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 0.6rem;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .perk-icon {
+      font-size: 1.5rem;
+    }
+
+    .perk-title {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--cream);
+      letter-spacing: 0.03em;
+    }
+
+    .perk-desc {
+      font-size: 0.78rem;
+      color: rgba(255, 255, 255, 0.5);
+      line-height: 1.6;
+    }
+
+    /* TESTIMONIALS */
+    .testimonials-section {
+      padding: clamp(3rem, 8vw, 5rem) 5vw;
+      background: var(--lpur);
+    }
+
+    .testimonials-inner {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .testimonials-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: clamp(1.5rem, 4vw, 2.5rem);
+    }
+
+    .review-count-badge {
+      font-size: clamp(0.65rem, 1.8vw, 0.72rem);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      background: var(--a2);
+      color: #fff;
+      padding: 0.3rem 0.75rem;
+      border-radius: 2rem;
+    }
+
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr));
+      gap: clamp(0.75rem, 2vw, 1.25rem);
+      margin-bottom: clamp(2rem, 5vw, 3rem);
+    }
+
+    .testimonial {
+      padding: clamp(1.25rem, 3vw, 1.75rem);
+      border-radius: 0.5rem;
+      background: #fff;
+      box-shadow: 0 2px 12px rgba(124, 58, 237, 0.08);
+      animation: fadeUp 0.4s ease;
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .testimonial-stars {
+      font-size: 0.9rem;
+      margin-bottom: 0.6rem;
+      color: var(--a4);
+    }
+
+    .testimonial-text {
+      font-family: var(--serif);
+      font-size: clamp(0.88rem, 2.2vw, 0.95rem);
+      line-height: 1.8;
+      color: var(--ink);
+      margin-bottom: 1rem;
+    }
+
+    .testimonial-author {
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--a2);
+      font-weight: 600;
+    }
+
+    .testimonial-date {
+      font-size: 0.68rem;
+      color: #aaa;
+      margin-top: 0.2rem;
+    }
+
+    .review-form-wrap {
+      background: #fff;
+      border-radius: 0.75rem;
+      padding: clamp(1.5rem, 4vw, 2.5rem);
+      box-shadow: 0 4px 24px rgba(124, 58, 237, 0.1);
+    }
+
+    .review-form-title {
+      font-family: var(--serif);
+      font-size: clamp(1.2rem, 3.5vw, 1.5rem);
+      font-weight: normal;
+      margin-bottom: 0.35rem;
+    }
+
+    .review-form-sub {
+      font-size: clamp(0.82rem, 2vw, 0.88rem);
+      color: #666;
+      margin-bottom: 1.5rem;
+    }
+
+    .review-form {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.85rem;
+    }
+
+    .review-form .full {
+      grid-column: 1/-1;
+    }
+
+    .review-form input,
+    .review-form textarea {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      border: 2px solid #e8e0f5;
+      border-radius: 0.4rem;
+      background: #faf8ff;
+      font-family: var(--sans);
+      font-size: clamp(0.85rem, 2vw, 0.9rem);
+      color: var(--ink);
+      outline: none;
+      transition: border-color 0.2s;
+      resize: none;
+    }
+
+    .review-form input:focus,
+    .review-form textarea:focus {
+      border-color: var(--a2);
+      background: #fff;
+    }
+
+    .star-picker {
+      display: flex;
+      gap: 0.3rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .star-picker span {
+      font-size: 0.72rem;
+      color: #888;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-right: 0.4rem;
+    }
+
+    .star-btn {
+      background: none;
+      border: none;
+      font-size: clamp(1.3rem, 4vw, 1.6rem);
+      cursor: pointer;
+      color: #ddd;
+      transition: color 0.15s, transform 0.15s;
+      padding: 0;
+      line-height: 1;
+    }
+
+    .star-btn:hover {
+      transform: scale(1.2);
+    }
+
+    .star-btn.active {
+      color: var(--a4);
+    }
+
+    .submit-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: clamp(0.75rem, 2vw, 0.9rem) clamp(1.25rem, 4vw, 2rem);
+      background: var(--a2);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      border-radius: 0.4rem;
+      font-size: clamp(0.75rem, 2vw, 0.82rem);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: opacity 0.2s, transform 0.15s;
+      font-family: var(--sans);
+      font-weight: 600;
+    }
+
+    .submit-btn:hover {
+      opacity: 0.88;
+      transform: translateY(-1px);
+    }
+
+    .submit-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .form-success {
+      display: none;
+      margin-top: 1rem;
+      padding: 0.9rem 1.25rem;
+      background: #f0fdf4;
+      border-left: 4px solid var(--a5);
+      border-radius: 0 0.4rem 0.4rem 0;
+      font-size: 0.88rem;
+      color: #065f46;
+    }
+
+    /* ABOUT */
+    .about-section {
+      padding: clamp(3rem, 8vw, 5rem) 5vw;
+      background: var(--lblu);
+    }
+
+    .about-inner {
+      max-width: 960px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(2rem, 6vw, 4rem);
+      align-items: start;
+    }
+
+    .about-photo-wrap {
+      position: relative;
+    }
+
+    .about-photo {
+      width: 100%;
+      border-radius: 1rem;
+      display: block;
+      object-fit: cover;
+      aspect-ratio: 3/4;
+      box-shadow: 0 12px 40px rgba(14, 165, 233, 0.18);
+    }
+
+    .about-photo-badge {
+      position: absolute;
+      bottom: -1rem;
+      right: -1rem;
+      background: var(--ink);
+      color: #fff;
+      border-radius: 0.75rem;
+      padding: 0.75rem 1rem;
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+      border-left: 3px solid var(--a1);
+      max-width: 140px;
+      line-height: 1.4;
+    }
+
+    .about-content {
+      padding-top: 0.5rem;
+    }
+
+    .about-label {
+      display: inline-block;
+      font-size: clamp(0.65rem, 1.8vw, 0.72rem);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--a3);
+      background: rgba(14, 165, 233, 0.1);
+      padding: 0.3rem 0.8rem;
+      border-radius: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .about-content h2 {
+      font-family: var(--serif);
+      font-size: clamp(1.5rem, 4vw, 2rem);
+      font-weight: normal;
+      line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+
+    .about-content p {
+      color: #4a5568;
+      font-size: clamp(0.88rem, 2.2vw, 0.95rem);
+      line-height: 1.9;
+      margin-bottom: 0.9rem;
+    }
+
+    .about-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(0.6rem, 2vw, 1rem);
+      margin-top: 1.5rem;
+    }
+
+    .stat-card {
+      background: #fff;
+      border-radius: 0.75rem;
+      padding: clamp(0.9rem, 2.5vw, 1.25rem);
+      text-align: center;
+      box-shadow: 0 2px 12px rgba(14, 165, 233, 0.08);
+      border-top: 3px solid var(--a3);
+    }
+
+    .stat-card:nth-child(2) {
+      border-top-color: var(--a1);
+    }
+
+    .stat-card:nth-child(3) {
+      border-top-color: var(--a2);
+    }
+
+    .stat-card:nth-child(4) {
+      border-top-color: var(--a5);
+    }
+
+    .stat-value {
+      font-family: var(--serif);
+      font-size: clamp(1.5rem, 4vw, 2.2rem);
+      font-weight: normal;
+      line-height: 1;
+      margin-bottom: 0.3rem;
+    }
+
+    .stat-label {
+      font-size: clamp(0.62rem, 1.6vw, 0.7rem);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #888;
+    }
+
+    /* CONTACT STRIP */
+    /* PRICING */
+    .pricing-section {
+      padding: clamp(3rem, 8vw, 5rem) 5vw;
+      background: var(--warm);
+    }
+
+    .pricing-inner {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .pricing-intro {
+      max-width: 520px;
+      margin-bottom: clamp(2rem, 5vw, 3rem);
+    }
+
+    .pricing-intro p {
+      color: #4a5568;
+      font-size: clamp(0.88rem, 2.2vw, 0.95rem);
+      line-height: 1.8;
+      margin-top: 0.75rem;
+    }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr));
+      gap: clamp(0.75rem, 2vw, 1.25rem);
+      margin-bottom: 2rem;
+    }
+
+    .pricing-card {
+      background: #fff;
+      border-radius: 0.75rem;
+      padding: clamp(1.25rem, 3vw, 1.75rem);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+      border-top: 4px solid var(--a1);
+      position: relative;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .pricing-card:nth-child(2) {
+
+      border-top-color: var(--a2);
+
+    }
+
+    .pricing-card:nth-child(3) {
+
+      border-top-color: var(--a3);
+
+    }
+
+    .pricing-card:nth-child(4) {
+
+      border-top-color: var(--a5);
+
+    }
+
+    .pricing-card:hover {
+
+      transform: translateY(-4px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+
+    }
+
+    .pricing-card.featured {
+
+      border-top-color: var(--a4);
+      box-shadow: 0 6px 30px rgba(245, 158, 11, 0.2);
+
+    }
+
+    .pricing-badge {
+
+      display: inline-block;
+      font-size: 0.62rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      background: var(--a4);
+      color: var(--ink);
+      padding: 0.2rem 0.55rem;
+      border-radius: 2rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+
+    }
+
+    .pricing-size {
+
+      font-family: var(--serif);
+      font-size: clamp(1.3rem, 3.5vw, 1.6rem);
+      font-weight: normal;
+      color: var(--ink);
+      margin-bottom: 0.25rem;
+
+    }
+
+    .pricing-price {
+
+      font-family: var(--serif);
+      font-size: clamp(1.8rem, 5vw, 2.4rem);
+      font-weight: normal;
+      color: var(--a1);
+      line-height: 1;
+      margin-bottom: 0.25rem;
+
+    }
+
+    .pricing-card:nth-child(2) .pricing-price {
+
+      color: var(--a2);
+
+    }
+
+    .pricing-card:nth-child(3) .pricing-price {
+
+      color: var(--a3);
+
+    }
+
+    .pricing-card.featured .pricing-price {
+
+      color: var(--a4);
+
+    }
+
+    .pricing-unit {
+
+      font-size: 0.72rem;
+      color: #888;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+
+    }
+
+    .pricing-features {
+
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+
+    }
+
+    .pricing-features li {
+
+      font-size: 0.82rem;
+      color: #555;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+
+    }
+
+    .pricing-features li::before {
+
+      content: '✓';
+      color: var(--a5);
+      font-weight: 700;
+      flex-shrink: 0;
+
+    }
+
+    .pricing-note {
+
+      font-size: clamp(0.78rem, 2vw, 0.85rem);
+      color: #888;
+      font-style: italic;
+      text-align: center;
+
+    }
+
+    .contact-strip {
+      background: var(--warm);
+      padding: clamp(2rem, 5vw, 3rem) 5vw;
+      border-top: 1px solid #ede8df;
+      border-bottom: 1px solid #ede8df;
+    }
+
+    .contact-strip-inner {
+      max-width: 960px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      gap: clamp(1rem, 3vw, 2rem);
+      align-items: center;
+      justify-content: center;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: clamp(0.82rem, 2.2vw, 0.95rem);
+      color: var(--ink);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .contact-item:hover {
+      color: var(--a1);
+    }
+
+    .contact-icon {
+      width: clamp(32px, 6vw, 40px);
+      height: clamp(32px, 6vw, 40px);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+      flex-shrink: 0;
+    }
+
+    .icon-phone {
+      background: rgba(232, 98, 58, 0.12);
+      color: var(--a1);
+    }
+
+    .icon-email {
+      background: rgba(124, 58, 237, 0.12);
+      color: var(--a2);
+    }
+
+    .icon-ig {
+      background: rgba(245, 158, 11, 0.12);
+      color: var(--a4);
+    }
+
+    /* COMMISSION */
+    .commission-section {
+      padding: clamp(4rem, 10vw, 6rem) 5vw;
+      background: linear-gradient(135deg, var(--ink) 0%, #2d1b4e 100%);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .commission-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 30% 50%, rgba(232, 98, 58, 0.15) 0%, transparent 60%), radial-gradient(circle at 70% 50%, rgba(124, 58, 237, 0.15) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .commission-inner {
+      position: relative;
+      max-width: 580px;
+      margin: 0 auto;
+    }
+
+    .commission-label {
+      display: inline-block;
+      font-size: clamp(0.65rem, 1.8vw, 0.72rem);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--a4);
+      background: rgba(245, 158, 11, 0.15);
+      padding: 0.35rem 0.9rem;
+      border-radius: 2rem;
+      margin-bottom: 1.25rem;
+      border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+
+    .commission-section h2 {
+      font-family: var(--serif);
+      font-size: clamp(1.8rem, 6vw, 3.2rem);
+      font-weight: normal;
+      color: var(--cream);
+      margin-bottom: 1rem;
+      line-height: 1.1;
+    }
+
+    .commission-section h2 em {
+      color: var(--a4);
+      font-style: normal;
+    }
+
+    .commission-section p {
+      color: rgba(255, 255, 255, 0.6);
+      font-size: clamp(0.88rem, 2.2vw, 1rem);
+      line-height: 1.8;
+      margin-bottom: 2.5rem;
+    }
+
+    .cta-buttons {
+      display: flex;
+      gap: 0.85rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: clamp(0.75rem, 2vw, 0.9rem) clamp(1.25rem, 4vw, 2rem);
+      border-radius: 0.4rem;
+      font-size: clamp(0.72rem, 2vw, 0.82rem);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: all 0.2s;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .cta-btn.primary {
+      background: var(--a1);
+      color: #fff;
+      border: 2px solid var(--a1);
+    }
+
+    .cta-btn.primary:hover {
+      background: transparent;
+      color: var(--a1);
+    }
+
+    .cta-btn.secondary {
+      background: var(--a4);
+      color: var(--ink);
+      border: 2px solid var(--a4);
+    }
+
+    .cta-btn.secondary:hover {
+      background: transparent;
+      color: var(--a4);
+    }
+
+    .cta-btn.outline {
+      background: transparent;
+      color: #fff;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .cta-btn.outline:hover {
+      border-color: #fff;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    /* CONTACT FORM */
+    .contact-form-section {
+      padding: 0 5vw clamp(4rem, 10vw, 6rem);
+      background: linear-gradient(135deg, var(--ink) 0%, #2d1b4e 100%);
+    }
+
+    .contact-form-wrap {
+      max-width: 580px;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 0.75rem;
+      padding: clamp(1.5rem, 4vw, 2.5rem);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+      position: relative;
+    }
+
+    .contact-form-title {
+      font-family: var(--serif);
+      font-size: clamp(1.2rem, 3.5vw, 1.5rem);
+      font-weight: normal;
+      margin-bottom: 0.35rem;
+    }
+
+    .contact-form-sub {
+      font-size: clamp(0.82rem, 2vw, 0.88rem);
+      color: #666;
+      margin-bottom: 1.5rem;
+    }
+
+    .contact-form {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.85rem;
+    }
+
+    .contact-form .full {
+      grid-column: 1/-1;
+    }
+
+    .contact-form input,
+    .contact-form textarea {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      border: 2px solid #e8e0f5;
+      border-radius: 0.4rem;
+      background: #faf8ff;
+      font-family: var(--sans);
+      font-size: clamp(0.85rem, 2vw, 0.9rem);
+      color: var(--ink);
+      outline: none;
+      transition: border-color 0.2s;
+      resize: none;
+    }
+
+    .contact-form input:focus,
+    .contact-form textarea:focus {
+      border-color: var(--a1);
+      background: #fff;
+    }
+
+    .contact-submit-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: clamp(0.75rem, 2vw, 0.9rem) clamp(1.25rem, 4vw, 2rem);
+      background: var(--a1);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      border-radius: 0.4rem;
+      font-size: clamp(0.75rem, 2vw, 0.82rem);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: opacity 0.2s, transform 0.15s;
+      font-family: var(--sans);
+      font-weight: 600;
+    }
+
+    .contact-submit-btn:hover {
+      opacity: 0.88;
+      transform: translateY(-1px);
+    }
+
+    .contact-form-success {
+      display: none;
+      margin-top: 1rem;
+      padding: 0.9rem 1.25rem;
+      background: #f0fdf4;
+      border-left: 4px solid var(--a5);
+      border-radius: 0 0.4rem 0.4rem 0;
+      font-size: 0.88rem;
+      color: #065f46;
+    }
+
+    @media (max-width: 560px) {
+      .contact-form {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* FOOTER */
+    footer {
+      background: var(--ink);
+      padding: clamp(1.5rem, 4vw, 2rem) 5vw;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      font-size: clamp(0.7rem, 1.8vw, 0.75rem);
+      color: rgba(255, 255, 255, 0.4);
+    }
+
+    .footer-logo {
+      height: 32px;
+      width: auto;
+      opacity: 0.7;
+      border-radius: 4px;
+    }
+
+    footer a {
+      color: var(--a1);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* BREAKPOINTS */
+    @media (max-width: 860px) {
+      .nav-links {
+        display: none;
+      }
+
+      .hamburger {
+        display: flex;
+      }
+
+      .gallery-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .artwork:first-child {
+        grid-column: span 2;
+      }
+
+      .about-inner {
+        grid-template-columns: 1fr;
+      }
+
+      .about-photo-wrap {
+        max-width: 380px;
+        margin: 0 auto;
+      }
+
+      .transform-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .gallery-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .artwork:first-child {
+        grid-column: span 1;
+      }
+
+      .review-form {
+        grid-template-columns: 1fr;
+      }
+
+      .about-stats {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .transform-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      footer {
+        flex-direction: column;
+        text-align: center;
+      }
+    }
+
+    @media (max-width: 380px) {
+      .about-stats {
+        grid-template-columns: 1fr;
+      }
+
+      .cta-btn {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .about-photo-badge {
+        right: 0;
+        bottom: -0.5rem;
+      }
+
+      .transform-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* TAB SYSTEM */
+    .tab-section {
+      display: none;
+    }
+
+    .tab-section.active {
+      display: block;
+    }
+
+    .nav-links a.active-link,
+    .mobile-menu a.active-link {
+      background: var(--a1);
+      color: #fff;
+    }
+  </style>
 </head>
 
 <body>
 
-    <!-- ===== SKIP LINK ===== -->
-    <a href="#main-content" class="skip-link">Skip to main content</a>
+  <nav>
+    <a class="nav-logo" href="javascript:void(0)" onclick="showTab('home')">
+      <img src="logo.png" alt="Bash Arts logo">
+      <span class="nav-logo-name">Bashir Yaqub</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="javascript:void(0)" data-tab="home" onclick="showTab('home')">Home</a></li>
+      <li><a href="javascript:void(0)" data-tab="reviews" onclick="showTab('reviews')">Reviews</a></li>
+      <li><a href="javascript:void(0)" data-tab="about" onclick="showTab('about')">About Me</a></li>
+      <li><a href="javascript:void(0)" data-tab="contact" onclick="showTab('contact')">Contact</a></li>
+    </ul>
+    <button class="hamburger" onclick="toggleMenu()" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
 
-    <div class="portfolio" id="main-content" role="main">
-
-        <!-- ===== HERO ===== -->
-        <header class="hero" aria-label="William Makori introduction">
-            <div class="hero-image" aria-hidden="true">
-                <img src="william.JPG" alt="William Makori – poet and spoken word artist"
-                    onerror="this.onerror=null; this.parentElement.innerHTML='<i class=\'fas fa-user-circle fallback-icon\'></i>';" />
-            </div>
-            <div class="hero-text">
-                <h1 class="name-block">
-                    William <span class="highlight">Makori</span>
-                </h1>
-                <div class="voice-tag" aria-label="Title">
-                    <i class="fas fa-bolt" aria-hidden="true"></i> The Voice of His Generation
-                </div>
-                <div class="tagline" role="list">
-                    <span role="listitem"><i class="fas fa-feather-alt" aria-hidden="true"></i> Poet</span>
-                    <span role="listitem"><i class="fas fa-microphone-alt" aria-hidden="true"></i> Spoken Word</span>
-                    <span role="listitem"><i class="fas fa-book-open" aria-hidden="true"></i> Storyteller</span>
-                    <span class="pill" role="listitem"><i class="fas fa-map-pin" aria-hidden="true"></i> Kenya · b.
-                        2007</span>
-                </div>
-                <div class="divider" aria-hidden="true"></div>
-                <blockquote class="hero-quote">
-                    <i class="fas fa-quote-left" aria-hidden="true"></i> Every poem is a conversation. Every performance
-                    is a journey. Every word carries a heartbeat.
-                </blockquote>
-            </div>
-        </header>
-
-        <!-- ===== ABOUT SECTION ===== -->
-        <section class="about-section" aria-labelledby="about-title">
-            <div class="about-grid">
-                <div class="about-text">
-                    <h2 id="about-title"><i class="fas fa-feather-alt" aria-hidden="true"></i> The Artist</h2>
-                    <p>
-                        <strong>William Makori</strong> is a spoken word artist and poet born in <strong>2007</strong>
-                        in Kenya.
-                        His work is a powerful blend of <strong>raw emotion, rhythm, and unflinching truth</strong>—
-                        a voice that speaks directly to the heart of his generation.
-                    </p>
-                    <p>
-                        From the bustling streets of Nairobi to stages across the country, William's performances
-                        are electric—<strong>moving crowds</strong>, challenging minds, and leaving audiences
-                        transformed. His poetry explores identity, resilience, hope, and the complex beauty
-                        of being young in Africa today.
-                    </p>
-                    <p>
-                        <em>"I write because silence is not an option. I perform because every word
-                            has the power to change something—someone."</em>
-                    </p>
-                    <div class="signature">— William Makori</div>
-                </div>
-                <div class="about-stats">
-                    <div class="stat-item">
-                        <i class="fas fa-calendar-alt" aria-hidden="true"></i>
-                        <span class="stat-number">2007</span>
-                        <span class="stat-label">Born in Kenya</span>
-                    </div>
-                    <div class="stat-item">
-                        <i class="fas fa-microphone" aria-hidden="true"></i>
-                        <span class="stat-number">50+</span>
-                        <span class="stat-label">Performances</span>
-                    </div>
-                    <div class="stat-item">
-                        <i class="fas fa-feather" aria-hidden="true"></i>
-                        <span class="stat-number">100+</span>
-                        <span class="stat-label">Poems Written</span>
-                    </div>
-                    <div class="stat-item">
-                        <i class="fas fa-users" aria-hidden="true"></i>
-                        <span class="stat-number">10K+</span>
-                        <span class="stat-label">Crowds Moved</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ===== PERFORMANCE STYLE ===== -->
-        <section class="style-section" aria-labelledby="style-title">
-            <h2 class="section-title" id="style-title" style="margin-bottom: 1rem;">
-                <i class="fas fa-bolt" aria-hidden="true"></i>
-                Performance Style
-                <span class="sub">— the makori signature</span>
-                <span class="line" aria-hidden="true"></span>
-            </h2>
-            <div class="style-grid" role="list">
-                <div class="style-card" role="listitem">
-                    <i class="fas fa-heart" aria-hidden="true"></i>
-                    <h4>Raw Emotion</h4>
-                    <p>Every word comes from a place of vulnerability and truth</p>
-                </div>
-                <div class="style-card" role="listitem">
-                    <i class="fas fa-drum" aria-hidden="true"></i>
-                    <h4>Rhythm</h4>
-                    <p>His poetry pulses with the heartbeat of the city</p>
-                </div>
-                <div class="style-card" role="listitem">
-                    <i class="fas fa-eye" aria-hidden="true"></i>
-                    <h4>Truth</h4>
-                    <p>Unflinching honesty that challenges and liberates</p>
-                </div>
-                <div class="style-card" role="listitem">
-                    <i class="fas fa-users" aria-hidden="true"></i>
-                    <h4>Moves the Crowd</h4>
-                    <p>An electric presence that transforms every room</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- ===== FEATURED PERFORMANCE ===== -->
-        <div class="performance-feature" aria-label="Featured performance">
-            <div class="perf-text">
-                <h3><i class="fas fa-play-circle" aria-hidden="true"
-                        style="margin-right:0.5rem; color:var(--accent);"></i> Featured Performance</h3>
-                <p>"Rivers & Rust" — A powerful spoken word piece about identity, resilience, and the journey of finding
-                    your voice.</p>
-                <div class="perf-meta"><i class="fas fa-map-pin" aria-hidden="true"></i> Nairobi Poetry Slam · 2025
-                </div>
-            </div>
-            <button class="perf-btn" onclick="handlePerformance()" aria-label="Watch featured performance">
-                <i class="fas fa-play" aria-hidden="true"></i> Watch Now
-            </button>
+  <div class="mobile-menu" id="mobile-menu">
+    <button class="mobile-close" onclick="toggleMenu()">&times;</button>
+    <a href="javascript:void(0)" data-tab="home" onclick="showTab('home'); toggleMenu()">Home</a>
+    <a href="javascript:void(0)" data-tab="reviews" onclick="showTab('reviews'); toggleMenu()">Reviews</a>
+    <a href="javascript:void(0)" data-tab="about" onclick="showTab('about'); toggleMenu()">About Me</a>
+    <a href="javascript:void(0)" data-tab="contact" onclick="showTab('contact'); toggleMenu()">Contact</a>
+  </div>
+  <div id="tab-home" class="tab-section active">
+    <section class="hero">
+      <div class="hero-bg-text">ART</div>
+      <div class="hero-inner">
+        <span class="hero-label">&#9998; Pencil Artist &mdash; Nairobi, Kenya</span>
+        <h1>I draw what<br>I <em>see</em> in you.</h1>
+        <p class="hero-sub">Hi, I&rsquo;m Bashir. I do hyper-realistic pencil portraits &mdash; just graphite, paper,
+          and
+          a lot of patience. Every face tells a story, and I make sure mine captures it.</p>
+        <a class="hero-cta" href="javascript:void(0)" onclick="showTab('contact')">Commission a portrait &rarr;</a>
+        <div class="hero-chips">
+          <span class="chip">Pencil &amp; Graphite</span>
+          <span class="chip">Portraits</span>
+          <span class="chip">Figurative</span>
+          <span class="chip">4K Image Upscaling</span>
+          <span class="chip">Gifts &amp; Events</span>
+          <span class="chip">No barriers &mdash; everyone welcome</span>
+        </div>
+      </div>
+    </section>
+    <section class="gallery-section" id="work">
+      <div class="section-header">
+        <h2 class="section-heading">My Work</h2>
+        <span class="section-tag">Selected pieces</span>
+      </div>
+      <div class="work-subtabs" id="work-subtabs">
+        <button class="work-subtab-btn active" data-cat="all" onclick="filterWork('all')">All</button>
+        <button class="work-subtab-btn" data-cat="Triptych" onclick="filterWork('Triptych')">Triptych</button>
+        <button class="work-subtab-btn" data-cat="Portrait" onclick="filterWork('Portrait')">Portrait</button>
+        <button class="work-subtab-btn" data-cat="Figurative" onclick="filterWork('Figurative')">Figurative</button>
+      </div>
+      <div class="gallery-grid" id="gallery-grid">
+        <p class="work-loading-msg">Loading work…</p>
+      </div>
+    </section>
+    <!-- BEFORE / AFTER TRANSFORM SECTION -->
+    <section class="transform-section" id="transform">
+      <div class="transform-inner">
+        <div class="transform-header">
+          <span class="transform-label">&#10024; Exclusive to Bash Arts</span>
+          <h2>Any photo. Any quality.<br>Turned into a <em>masterpiece.</em></h2>
+          <p>Send me any image &mdash; blurry, old, low resolution &mdash; and I don&rsquo;t just draw it. I upscale it
+            to
+            4K quality and render it in stunning pencil detail. No one is turned away. I can serve every person, without
+            any barrier.</p>
         </div>
 
-        <!-- ===== POETRY COLLECTION ===== -->
-        <section aria-labelledby="poetry-title">
-            <h2 class="section-title" id="poetry-title">
-                <i class="fas fa-feather" aria-hidden="true"></i>
-                featured poems
-                <span class="sub">— words that speak</span>
-                <span class="line" aria-hidden="true"></span>
-            </h2>
-
-            <div class="poetry-grid" role="list">
-                <article class="poem-card" role="listitem">
-                    <h3>Embers of the city</h3>
-                    <div class="poem-excerpt">
-                        "the night exhales smoke & silence,<br />
-                        our tongues are matchsticks,<br />
-                        striking against the concrete…"
-                    </div>
-                    <div class="meta">
-                        <span><i class="far fa-calendar-alt" aria-hidden="true"></i> 2025</span>
-                        <span><i class="far fa-heart" aria-hidden="true"></i> 18</span>
-                    </div>
-                </article>
-
-                <article class="poem-card" role="listitem">
-                    <h3>When rivers speak</h3>
-                    <div class="poem-excerpt">
-                        "we are water remembering stone,<br />
-                        we are the echo of a flood<br />
-                        that never learned to kneel."
-                    </div>
-                    <div class="meta">
-                        <span><i class="far fa-calendar-alt" aria-hidden="true"></i> 2024</span>
-                        <span><i class="far fa-heart" aria-hidden="true"></i> 24</span>
-                    </div>
-                </article>
-
-                <article class="poem-card" role="listitem">
-                    <h3>Bones of the earth</h3>
-                    <div class="poem-excerpt">
-                        "my grandfather's hands were maps,<br />
-                        his veins, rivers of gold.<br />
-                        i carry his silence in my throat."
-                    </div>
-                    <div class="meta">
-                        <span><i class="far fa-calendar-alt" aria-hidden="true"></i> 2023</span>
-                        <span><i class="far fa-heart" aria-hidden="true"></i> 31</span>
-                    </div>
-                </article>
-
-                <article class="poem-card" role="listitem">
-                    <h3>Unspoken</h3>
-                    <div class="poem-excerpt">
-                        "the words we bury<br />
-                        grow roots in the dark,<br />
-                        and bloom in the mouth of a stranger."
-                    </div>
-                    <div class="meta">
-                        <span><i class="far fa-calendar-alt" aria-hidden="true"></i> 2024</span>
-                        <span><i class="far fa-heart" aria-hidden="true"></i> 14</span>
-                    </div>
-                </article>
-            </div>
-        </section>
-
-        <!-- ===== SPOKEN WORD ===== -->
-        <section aria-labelledby="spoken-title">
-            <h2 class="section-title" id="spoken-title" style="margin-top: 2rem;">
-                <i class="fas fa-microphone-alt" aria-hidden="true"></i>
-                spoken word · live
-                <span class="sub">— performances</span>
-                <span class="line" aria-hidden="true"></span>
-            </h2>
-
-            <div class="spoken-grid" role="list">
-                <article class="spoken-item" role="listitem">
-                    <i class="fas fa-music" aria-hidden="true"></i>
-                    <h4>"Rivers & Rust"</h4>
-                    <p>Nairobi Poetry Slam · 2025</p>
-                    <div class="small-meta"><i class="far fa-clock" aria-hidden="true"></i> 4:30 min</div>
-                </article>
-
-                <article class="spoken-item" role="listitem">
-                    <i class="fas fa-fire" aria-hidden="true"></i>
-                    <h4>"Concrete Lullaby"</h4>
-                    <p>Kwani? Open Mic · 2026</p>
-                    <div class="small-meta"><i class="far fa-clock" aria-hidden="true"></i> 3:50 min</div>
-                </article>
-
-                <article class="spoken-item" role="listitem">
-                    <i class="fas fa-hands" aria-hidden="true"></i>
-                    <h4>"Breath & Bone"</h4>
-                    <p>Sauti ya Mitaani · 2025</p>
-                    <div class="small-meta"><i class="far fa-clock" aria-hidden="true"></i> 5:10 min</div>
-                </article>
-
-                <article class="spoken-item" role="listitem">
-                    <i class="fas fa-dove" aria-hidden="true"></i>
-                    <h4>"Letters to the Wind"</h4>
-                    <p>Storymoja Festival · 2024</p>
-                    <div class="small-meta"><i class="far fa-clock" aria-hidden="true"></i> 6:00 min</div>
-                </article>
-            </div>
-        </section>
-
-        <!-- ===== STORE SECTION (Support) ===== -->
-        <section class="store-section" aria-labelledby="store-title">
-            <div class="store-header">
-                <h2 id="store-title"><i class="fas fa-hand-holding-heart" aria-hidden="true"
-                        style="color:var(--accent);"></i> Support the Art</h2>
-                <p>
-                    William's poetry is free to read and share. If his words have moved you,
-                    consider supporting his journey. <i class="fas fa-feather-alt" aria-hidden="true"></i>
-                </p>
-            </div>
-
-            <div class="monetization-grid" role="list">
-                <!-- Product 1 -->
-                <article class="product-card" role="listitem">
-                    <span class="badge">digital</span>
-                    <div class="product-icon" aria-hidden="true"><i class="fas fa-book-open"></i></div>
-                    <h3>"Embers & Echoes"</h3>
-                    <p class="product-desc">A curated collection of 12 poems including exclusive pieces. PDF download.
-                    </p>
-                    <div class="product-price">KSh 1,200 <span>KES</span></div>
-                    <div class="payment-buttons">
-                        <button class="buy-btn mpesa"
-                            onclick="openMpesaModal('poetry_collection', 'Embers & Echoes', 1200, 9.99)"
-                            aria-label="Pay with M-Pesa">
-                            <i class="fas fa-mobile-alt" aria-hidden="true"></i> M-Pesa
-                        </button>
-                        <button class="buy-btn stripe" onclick="handlePurchase('poetry_collection')"
-                            aria-label="Pay with card">
-                            <i class="fas fa-credit-card" aria-hidden="true"></i> Card
-                        </button>
-                    </div>
-                </article>
-
-                <!-- Product 2 -->
-                <article class="product-card" role="listitem">
-                    <span class="badge">audio</span>
-                    <div class="product-icon" aria-hidden="true"><i class="fas fa-headphones"></i></div>
-                    <h3>"Live Sessions Vol. 1"</h3>
-                    <p class="product-desc">High-quality audio recordings of William's most powerful performances. MP3
-                        download.</p>
-                    <div class="product-price">KSh 950 <span>KES</span></div>
-                    <div class="payment-buttons">
-                        <button class="buy-btn mpesa"
-                            onclick="openMpesaModal('audio_performance', 'Live Sessions Vol. 1', 950, 7.99)"
-                            aria-label="Pay with M-Pesa">
-                            <i class="fas fa-mobile-alt" aria-hidden="true"></i> M-Pesa
-                        </button>
-                        <button class="buy-btn stripe" onclick="handlePurchase('audio_performance')"
-                            aria-label="Pay with card">
-                            <i class="fas fa-credit-card" aria-hidden="true"></i> Card
-                        </button>
-                    </div>
-                </article>
-
-                <!-- Product 3 -->
-                <article class="product-card" role="listitem">
-                    <span class="badge">custom</span>
-                    <div class="product-icon" aria-hidden="true"><i class="fas fa-feather-alt"></i></div>
-                    <h3>Commission a Poem</h3>
-                    <p class="product-desc">A personalized, original poem crafted just for you. Delivered as PDF or
-                        video.</p>
-                    <div class="product-price">KSh 3,500 <span>KES</span></div>
-                    <div class="payment-buttons">
-                        <button class="buy-btn mpesa"
-                            onclick="openMpesaModal('custom_poem', 'Custom Commissioned Poem', 3500, 29.99)"
-                            aria-label="Pay with M-Pesa">
-                            <i class="fas fa-mobile-alt" aria-hidden="true"></i> M-Pesa
-                        </button>
-                        <button class="buy-btn stripe" onclick="handlePurchase('custom_poem')"
-                            aria-label="Pay with card">
-                            <i class="fas fa-credit-card" aria-hidden="true"></i> Card
-                        </button>
-                    </div>
-                </article>
-
-                <!-- Product 4 -->
-                <article class="product-card" role="listitem">
-                    <span class="badge">membership</span>
-                    <div class="product-icon" aria-hidden="true"><i class="fas fa-crown"></i></div>
-                    <h3>Poetry Patron</h3>
-                    <p class="product-desc">Monthly access to exclusive poems, early releases, and behind-the-scenes
-                        content.</p>
-                    <div class="product-price">KSh 600 <span>/ month</span></div>
-                    <div class="payment-buttons">
-                        <button class="buy-btn mpesa"
-                            onclick="openMpesaModal('poetry_patron', 'Poetry Patron Monthly', 600, 4.99)"
-                            aria-label="Pay with M-Pesa">
-                            <i class="fas fa-mobile-alt" aria-hidden="true"></i> M-Pesa
-                        </button>
-                        <button class="buy-btn stripe" onclick="handlePurchase('poetry_patron')"
-                            aria-label="Pay with card">
-                            <i class="fas fa-credit-card" aria-hidden="true"></i> Card
-                        </button>
-                    </div>
-                </article>
-            </div>
-        </section>
-
-        <!-- ===== TIP JAR ===== -->
-        <aside class="tip-section" aria-label="Tip jar">
-            <div class="tip-text">
-                <i class="fas fa-mug-hot" aria-hidden="true"></i>
-                <div class="tip-message">
-                    <strong>Love the poetry?</strong> Buy William a coffee or leave a tip.
-                </div>
-            </div>
-            <div class="tip-buttons">
-                <button class="tip-btn" onclick="handleTip(5)" aria-label="Tip $5">
-                    <i class="fas fa-coffee" aria-hidden="true"></i> $5
-                </button>
-                <button class="tip-btn" onclick="handleTip(10)" aria-label="Tip $10">
-                    <i class="fas fa-coffee" aria-hidden="true"></i> $10
-                </button>
-                <button class="tip-btn outline" onclick="handleTip(20)" aria-label="Tip $20">
-                    <i class="fas fa-heart" aria-hidden="true"></i> $20
-                </button>
-            </div>
-        </aside>
-
-        <!-- ===== BOOKING ===== -->
-        <aside class="booking-section" aria-label="Booking information">
-            <div class="booking-text">
-                <i class="fas fa-calendar-check" aria-hidden="true"></i>
-                <div class="booking-message">
-                    <strong>Book William for your event.</strong> Corporate, weddings, festivals, workshops — his spoken
-                    word moves every crowd.
-                </div>
-            </div>
-            <button class="booking-btn" onclick="handleBooking()" aria-label="Book William for an event">
-                <i class="fas fa-envelope" aria-hidden="true"></i> Book Now
-            </button>
-        </aside>
-
-        <!-- ===== FEATURED QUOTE ===== -->
-        <figure class="featured-quote" aria-label="Featured quote">
-            <i class="fas fa-quote-left" aria-hidden="true"></i>
-            <blockquote>
-                <p>"Poetry is not a whisper — it is the sound of a city waking up."</p>
-            </blockquote>
-            <figcaption class="attribution">— William Makori, spoken word artist</figcaption>
-        </figure>
-
-        <!-- ===== FOOTER ===== -->
-        <footer class="footer">
-            <div class="socials" aria-label="Social media links">
-                <a href="#" aria-label="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
-                <a href="#" aria-label="Twitter"><i class="fab fa-twitter" aria-hidden="true"></i></a>
-                <a href="#" aria-label="SoundCloud"><i class="fab fa-soundcloud" aria-hidden="true"></i></a>
-                <a href="#" aria-label="YouTube"><i class="fab fa-youtube" aria-hidden="true"></i></a>
-            </div>
-            <div class="copy">
-                <i class="fas fa-feather-alt" aria-hidden="true"></i> william makori · poetry & spoken word
-            </div>
-        </footer>
-
-    </div>
-
-    <!-- ===== M-PESA MODAL ===== -->
-    <div class="modal-overlay" id="mpesaModal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-        <div class="modal">
-            <button class="modal-close" onclick="closeMpesaModal()" aria-label="Close payment dialog">&times;</button>
-            <div class="modal-icon" aria-hidden="true"><i class="fas fa-mobile-alt"></i></div>
-            <h2 id="modal-title">Pay with M-Pesa</h2>
-            <p class="modal-sub">You'll receive an <strong>STK Push</strong> on your Safaricom number to confirm
-                payment.</p>
-
-            <div class="modal-amount" aria-live="polite">
-                KSh <span id="modalAmountValue">0</span>
-                <span id="modalUsdValue" style="font-size:0.8rem; display:block; color:#6b6156;"></span>
-            </div>
-
-            <div class="form-group">
-                <label for="mpesaPhone"><i class="fas fa-phone" aria-hidden="true"></i> M-Pesa Phone Number</label>
-                <input type="tel" id="mpesaPhone" placeholder="0712 345 678" value="254" autocomplete="tel"
-                    inputmode="numeric" />
-                <span class="helper-text">Enter your Safaricom number (e.g., 254712345678)</span>
-            </div>
-
-            <button class="pay-btn" id="mpesaPayBtn" onclick="processMpesaPayment()">
-                <i class="fas fa-check-circle" aria-hidden="true"></i> Pay Now
-            </button>
-
-            <p class="modal-footer-text">
-                <i class="fas fa-lock" aria-hidden="true"></i> Secured via Safaricom Daraja API
-            </p>
+        <div class="transform-grid">
+          <div class="transform-card">
+            <span class="transform-badge badge-before">&#128247; Original photo</span>
+            <img src="original18.jpg" alt="Original photo of Njeri in a teal dress">
+          </div>
+          <div class="transform-card">
+            <span class="transform-badge badge-after">&#9998; Pencil portrait</span>
+            <img src="crafted18.jpg" alt="Bashir's pencil drawing of Njeri">
+          </div>
         </div>
+
+        <!-- Second transformation example -->
+        <div style="margin-top: clamp(1rem,3vw,1.5rem); margin-bottom: clamp(1rem,3vw,1.5rem);">
+          <p
+            style="font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:0.75rem;">
+            &#8212; Another example</p>
+          <div class="transform-grid">
+            <div class="transform-card">
+              <span class="transform-badge badge-before">&#128247; Low-res selfie</span>
+              <img src="lowselfie.jpg" alt="Low quality selfie of a child">
+            </div>
+            <div class="transform-card">
+              <span class="transform-badge badge-after">&#9998; Final portrait</span>
+              <img src="final.jpg" alt="Composite showing the photo inputs and pencil drawing result">
+            </div>
+          </div>
+        </div>
+
+        <div class="transform-perks">
+          <div class="perk">
+            <span class="perk-icon">&#128247;</span>
+            <span class="perk-title">Any image quality</span>
+            <p class="perk-desc">Low-res, blurry, old photos? No problem. I work with what you have.</p>
+          </div>
+          <div class="perk">
+            <span class="perk-icon">&#127775;</span>
+            <span class="perk-title">4K upscaling</span>
+            <p class="perk-desc">I enhance your reference image to ultra-high resolution before drawing.</p>
+          </div>
+          <div class="perk">
+            <span class="perk-icon">&#127759;</span>
+            <span class="perk-title">No barriers</span>
+            <p class="perk-desc">Everyone deserves great art. I serve every client, wherever you are.</p>
+          </div>
+          <div class="perk">
+            <span class="perk-icon">&#9998;</span>
+            <span class="perk-title">100% hand-drawn</span>
+            <p class="perk-desc">Every line is mine. Pure graphite, pure craft, no digital drawing tools.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="pricing-section" id="pricing">
+      <div class="pricing-inner">
+        <div class="section-header">
+          <h2 class="section-heading">Pricing</h2>
+          <span class="section-tag">Simple &amp; affordable</span>
+        </div>
+        <div class="pricing-intro">
+          <p>Every portrait is hand-drawn from scratch. Send me your photo &mdash; any quality &mdash; and I&rsquo;ll
+            give
+            you something you&rsquo;ll keep forever. Prices below are starting points; larger or more complex pieces may
+            vary.</p>
+        </div>
+        <div class="pricing-grid">
+          <div class="pricing-card featured">
+            <span class="pricing-badge">&#9733; Most popular</span>
+            <p class="pricing-size">A4 Portrait</p>
+            <p class="pricing-price">Ksh 500</p>
+            <p class="pricing-unit">per drawing</p>
+            <ul class="pricing-features">
+              <li>100% hand-drawn in pencil</li>
+              <li>Single or group portrait</li>
+              <li>4K image upscaling included</li>
+              <li>Any photo quality accepted</li>
+              <li>Framed or unframed</li>
+            </ul>
+          </div>
+          <div class="pricing-card">
+            <p class="pricing-size">A3 Portrait</p>
+            <p class="pricing-price">Ksh 1,000</p>
+            <p class="pricing-unit">per drawing</p>
+            <ul class="pricing-features">
+              <li>Larger, more detailed work</li>
+              <li>Ideal for wall display</li>
+              <li>4K image upscaling included</li>
+              <li>Any photo quality accepted</li>
+            </ul>
+          </div>
+          <div class="pricing-card">
+            <p class="pricing-size">A2 Portrait</p>
+            <p class="pricing-price">Ksh 1,900</p>
+            <p class="pricing-unit">per drawing</p>
+            <ul class="pricing-features">
+              <li>Statement-size artwork</li>
+              <li>Events &amp; exhibitions</li>
+              <li>4K image upscaling included</li>
+              <li>Any photo quality accepted</li>
+            </ul>
+          </div>
+          <div class="pricing-card">
+            <p class="pricing-size">A1 Portrait</p>
+            <p class="pricing-price">Ksh 3,500</p>
+            <p class="pricing-unit">per drawing</p>
+            <ul class="pricing-features">
+              <li>Largest format, gallery-scale</li>
+              <li>Ideal for venues &amp; gifts</li>
+              <li>4K image upscaling included</li>
+              <li>Any photo quality accepted</li>
+            </ul>
+          </div>
+        </div>
+        <p class="pricing-note">&#9998; Not sure what size you need? Just reach out &mdash; I&rsquo;ll help you choose.
+          Delivery within Nairobi can be arranged.</p>
+      </div>
+    </section>
+  </div>
+
+  <div id="tab-reviews" class="tab-section">
+    <section class="testimonials-section" id="testimonials">
+      <div class="testimonials-inner">
+        <div class="testimonials-top">
+          <h2 class="section-heading">What people say</h2>
+          <span class="review-count-badge" id="review-count"></span>
+        </div>
+        <div class="testimonials-grid" id="reviews-grid"></div>
+        <div class="review-form-wrap">
+          <h3 class="review-form-title">Had a piece done by me?</h3>
+          <p class="review-form-sub">I&rsquo;d love to hear what you thought. Leave a review below &mdash; it means a
+            lot.
+          </p>
+          <div class="review-form">
+            <input type="text" id="r-name" placeholder="Your name" maxlength="60" />
+            <div class="star-picker full">
+              <span>Rating</span>
+              <button class="star-btn" data-val="1">&#9733;</button>
+              <button class="star-btn" data-val="2">&#9733;</button>
+              <button class="star-btn" data-val="3">&#9733;</button>
+              <button class="star-btn" data-val="4">&#9733;</button>
+              <button class="star-btn" data-val="5">&#9733;</button>
+            </div>
+            <textarea class="full" id="r-text" placeholder="Share your experience..." rows="4"
+              maxlength="400"></textarea>
+            <div class="full">
+              <button class="submit-btn" id="submit-btn" onclick="submitReview()">&#10003; Post Review</button>
+              <div class="form-success" id="form-success">&#10003; Thank you so much &mdash; your review has been
+                posted!
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div id="tab-about" class="tab-section">
+    <section class="about-section" id="about">
+      <div class="about-inner">
+        <div class="about-photo-wrap">
+          <img class="about-photo" src="bashir.jpg" alt="Bashir Yaqub holding one of his pencil drawings in his studio">
+          <div class="about-photo-badge">Bashir Yaqub<br>Pencil Artist<br>Nairobi</div>
+        </div>
+        <div class="about-content">
+          <span class="about-label">About Me</span>
+          <h2>Every stroke is a decision.</h2>
+          <p>I&rsquo;m Bashir Yaqub, a pencil artist based in Nairobi. I work entirely by hand &mdash; no digital tools,
+            no shortcuts. Just graphite on paper, built up layer by layer until the person in front of me comes alive on
+            the page.</p>
+          <p>I love portraits most. There&rsquo;s something powerful about capturing someone&rsquo;s likeness so
+            precisely
+            that they feel it when they see it. That reaction &mdash; that silence &mdash; is what keeps me drawing.</p>
+          <div class="about-stats">
+            <div class="stat-card">
+              <p class="stat-value">50+</p>
+              <p class="stat-label">Commissions done</p>
+            </div>
+            <div class="stat-card">
+              <p class="stat-value">100%</p>
+              <p class="stat-label">Hand-drawn</p>
+            </div>
+            <div class="stat-card">
+              <p class="stat-value">A4&ndash;A1</p>
+              <p class="stat-label">Sizes I work in</p>
+            </div>
+            <div class="stat-card">
+              <p class="stat-value">4K</p>
+              <p class="stat-label">Image upscaling</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div id="tab-contact" class="tab-section">
+    <div class="contact-strip">
+      <div class="contact-strip-inner">
+        <a class="contact-item" href="tel:+254756593469">
+          <span class="contact-icon icon-phone">&#128222;</span><span>+254 756 593 469</span>
+        </a>
+        <a class="contact-item" href="mailto:bashirsivona70@gmail.com">
+          <span class="contact-icon icon-email">&#9993;</span><span>bashirsivona70@gmail.com</span>
+        </a>
+        <a class="contact-item" href="https://instagram.com/bashir.art" target="_blank">
+          <span class="contact-icon icon-ig">&#9824;</span><span>@bashir.art</span>
+        </a>
+      </div>
     </div>
+    <section class="commission-section" id="contact">
+      <div class="commission-inner">
+        <span class="commission-label">&#9998; Get in touch</span>
+        <h2>Let me draw<br>someone you <em>love.</em></h2>
+        <p>Send me any photo &mdash; any quality &mdash; and I&rsquo;ll upscale it to 4K and turn it into a pencil
+          portrait. Gift it, frame it, keep it forever.</p>
+        <div class="cta-buttons">
+          <a class="cta-btn primary" href="mailto:bashirsivona70@gmail.com">&#9993; Email Me</a>
+          <a class="cta-btn secondary" href="tel:+254756593469">&#128222; Call Me</a>
+          <a class="cta-btn outline" href="https://instagram.com/bashir.art" target="_blank">@bashir.art</a>
+        </div>
+      </div>
+    </section>
 
-    <!-- ===== TOAST ===== -->
-    <div class="toast" id="toast" role="alert" aria-live="polite">
-        <i class="fas fa-check-circle" aria-hidden="true"></i>
-        <span id="toastMessage">Processing...</span>
-    </div>
+    <section class="contact-form-section">
+      <div class="contact-form-wrap">
+        <h3 class="contact-form-title">Send me a message</h3>
+        <p class="contact-form-sub">Tell me a bit about what you&rsquo;re after &mdash; I&rsquo;ll get back to you by
+          email as soon as I can.</p>
+        <div class="contact-form">
+          <input type="text" id="c-name" placeholder="Your name" maxlength="60" />
+          <input type="email" id="c-email" placeholder="Your email" maxlength="100" />
+          <textarea class="full" id="c-message" placeholder="What would you like drawn?" rows="4"
+            maxlength="500"></textarea>
+          <div class="full">
+            <button class="contact-submit-btn" id="contact-submit-btn" onclick="submitContactForm()">&#9993; Send
+              Message</button>
+            <div class="contact-form-success" id="contact-form-success">&#10003; Thanks &mdash; your email app should
+              now be open with your message ready to send.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
 
-    <!-- ===== JAVASCRIPT ===== -->
-    <script>
-        // ============================================
-        // 1. STRIPE CONFIGURATION
-        // ============================================
-        const STRIPE_PUBLISHABLE_KEY = 'pk_test_YOUR_PUBLISHABLE_KEY_HERE';
-        const stripe = Stripe(STRIPE_PUBLISHABLE_KEY);
+  <footer>
+    <img class="footer-logo" src="logo.png" alt="Bash Arts">
+    <span>&copy; 2026 Bashir Yaqub &mdash; Pencil Artist, Nairobi</span>
+    <span><a href="https://instagram.com/bashir.art" target="_blank">@bashir.art</a></span>
+  </footer>
+  <script src="config.js"></script>
+  <script>
+    const SUPABASE_URL = window.SUPABASE_URL;
+    const SUPABASE_KEY = window.SUPABASE_KEY;
 
-        const PRICE_IDS = {
-            poetry_collection: 'price_YOUR_POETRY_COLLECTION_PRICE_ID',
-            audio_performance: 'price_YOUR_AUDIO_PERFORMANCE_PRICE_ID',
-            custom_poem: 'price_YOUR_CUSTOM_POEM_PRICE_ID',
-            poetry_patron: 'price_YOUR_POETRY_PATRON_PRICE_ID'
-        };
+    if (!SUPABASE_URL || !SUPABASE_KEY) {
+      console.error('Missing config.js — copy config.example.js to config.js and fill in your Supabase values.');
+    }
 
-        const SERVER_URL = 'http://localhost:3000';
+    const HEADERS = {
+      'apikey': SUPABASE_KEY,
+      'Authorization': 'Bearer ' + SUPABASE_KEY,
+      'Content-Type': 'application/json'
+    };
 
-        // ============================================
-        // 2. TOAST NOTIFICATION
-        // ============================================
-        function showToast(message, icon = 'fa-check-circle') {
-            const toast = document.getElementById('toast');
-            const toastMessage = document.getElementById('toastMessage');
-            toastMessage.textContent = message;
-            toast.querySelector('i').className = `fas ${icon}`;
-            toast.classList.add('show');
-            clearTimeout(toast._timeout);
-            toast._timeout = setTimeout(() => {
-                toast.classList.remove('show');
-            }, 6000);
-        }
+    const SEED = [
+      { name: 'Samuel Mundia', stars: 5, text: "He drew my exact picture, and when I look at it, it always gives me a feeling I can't express in words.", date: '2026-05-10' },
+      { name: 'Robert N', stars: 5, text: "The ability to transform a simple sheet of paper into a masterpiece is a rare gift. Every detail is carefully considered, every stroke deliberate. With nothing but a lead pencil, he creates work that speaks volumes — commanding attention and admiration in equal measure. He turns the ordinary into something remarkable, a true master of his craft.", date: '2026-06-01' },
+      { name: 'Lawrence', stars: 5, text: "I will commend Bashir for his hard work and dedication. I like the idea of prioritizing his work rather than just earning and moving.", date: '2026-06-05' },
+      { name: 'Njeri', stars: 5, text: "Your work is just good — provided that it's affordable and unique.", date: '2026-06-08' }
+    ];
 
-        // ============================================
-        // 3. STRIPE PURCHASE
-        // ============================================
-        async function handlePurchase(productId) {
-            const button = event.currentTarget;
-            const originalText = button.innerHTML;
+    const SEED_WORK = [
+      { title: 'Portraits in Series', category: 'Triptych', image_url: 'Triptych.jpg', meta: 'Pencil on paper · Triptych', sort_order: 1 },
+      { title: 'The Quiet Moment', category: 'Portrait', image_url: 'portrait.png', meta: 'Pencil on paper · Portrait', sort_order: 2 },
+      { title: 'The Footballer', category: 'Figurative', image_url: 'figurative.jpg', meta: 'Pencil on paper · Figurative', sort_order: 3 }
+    ];
 
-            button.innerHTML = '<i class="fas fa-spinner fa-spin" aria-hidden="true"></i> Processing...';
-            button.disabled = true;
-            button.classList.add('loading');
+    function toggleMenu() {
+      document.getElementById('mobile-menu').classList.toggle('open');
+    }
 
-            try {
-                const priceId = PRICE_IDS[productId];
-                if (!priceId || priceId === 'price_YOUR_POETRY_COLLECTION_PRICE_ID') {
-                    await simulateCheckout(productId);
-                    button.innerHTML = originalText;
-                    button.disabled = false;
-                    button.classList.remove('loading');
-                    return;
-                }
+    function showTab(name) {
+      document.querySelectorAll('.tab-section').forEach(function (sec) {
+        sec.classList.toggle('active', sec.id === 'tab-' + name);
+      });
+      document.querySelectorAll('[data-tab]').forEach(function (link) {
+        link.classList.toggle('active-link', link.dataset.tab === name);
+      });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
 
-                const response = await fetch(`${SERVER_URL}/create-checkout-session`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        priceId: priceId,
-                        productId: productId,
-                        successUrl: window.location.href + '?success=true',
-                        cancelUrl: window.location.href + '?canceled=true',
-                    }),
-                });
+    showTab('home');
 
-                if (!response.ok) throw new Error('Failed to create checkout session');
+    const WEB3FORMS_ACCESS_KEY = 'YOUR_WEB3FORMS_ACCESS_KEY';
 
-                const session = await response.json();
-                const result = await stripe.redirectToCheckout({ sessionId: session.id });
+    async function submitContactForm() {
+      const name = document.getElementById('c-name').value.trim();
+      const email = document.getElementById('c-email').value.trim();
+      const message = document.getElementById('c-message').value.trim();
+      const succ = document.getElementById('contact-form-success');
+      const btn = document.getElementById('contact-submit-btn');
 
-                if (result.error) throw new Error(result.error.message);
+      if (!name) { document.getElementById('c-name').focus(); return; }
+      if (!email) { document.getElementById('c-email').focus(); return; }
+      if (!message) { document.getElementById('c-message').focus(); return; }
 
-            } catch (error) {
-                console.error('Checkout error:', error);
-                showToast('Payment failed. Please try again.', 'fa-exclamation-circle');
-                button.innerHTML = originalText;
-                button.disabled = false;
-                button.classList.remove('loading');
-            }
-        }
+      btn.disabled = true;
+      btn.textContent = 'Sending...';
 
-        async function simulateCheckout(productId) {
-            const productNames = {
-                poetry_collection: 'Embers & Echoes Poetry Collection',
-                audio_performance: 'Live Sessions Vol. 1',
-                custom_poem: 'Custom Commissioned Poem',
-                poetry_patron: 'Poetry Patron Monthly Subscription'
-            };
-            await new Promise(resolve => setTimeout(resolve, 1500));
-            showToast(`✅ Demo: ${productNames[productId]} — Connect Stripe for real payments!`, 'fa-shopping-cart');
-        }
-
-        // ============================================
-        // 4. M-PESA MODAL
-        // ============================================
-        let mpesaData = {};
-
-        function openMpesaModal(productId, productName, amountKes, amountUsd) {
-            mpesaData = { productId, productName, amountKes, amountUsd };
-            document.getElementById('modalAmountValue').textContent = amountKes.toLocaleString();
-            document.getElementById('modalUsdValue').textContent = `≈ $${amountUsd.toFixed(2)} USD`;
-            document.getElementById('mpesaPhone').value = '254';
-            document.getElementById('mpesaModal').classList.add('active');
-            document.body.style.overflow = 'hidden';
-            setTimeout(() => document.getElementById('mpesaPhone').focus(), 100);
-        }
-
-        function closeMpesaModal() {
-            document.getElementById('mpesaModal').classList.remove('active');
-            document.body.style.overflow = '';
-        }
-
-        document.getElementById('mpesaModal').addEventListener('click', function (e) {
-            if (e.target === this) closeMpesaModal();
+      try {
+        const res = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            access_key: WEB3FORMS_ACCESS_KEY,
+            subject: 'Portrait inquiry from ' + name,
+            from_name: name,
+            name: name,
+            email: email,
+            message: message
+          })
         });
+        const data = await res.json();
 
-        document.addEventListener('keydown', function (e) {
-            if (e.key === 'Escape') closeMpesaModal();
+        if (data.success) {
+          succ.textContent = '✓ Thanks, ' + name.split(' ')[0] + ' — your message is on its way. I\u2019ll reply by email soon.';
+          succ.style.display = 'block';
+          document.getElementById('c-name').value = '';
+          document.getElementById('c-email').value = '';
+          document.getElementById('c-message').value = '';
+        } else {
+          succ.textContent = '⚠ Something went wrong sending that. Please try emailing me directly instead.';
+          succ.style.background = '#fef2f2';
+          succ.style.borderLeftColor = '#dc2626';
+          succ.style.color = '#991b1b';
+          succ.style.display = 'block';
+        }
+      } catch (err) {
+        succ.textContent = '⚠ Something went wrong sending that. Please try emailing me directly instead.';
+        succ.style.background = '#fef2f2';
+        succ.style.borderLeftColor = '#dc2626';
+        succ.style.color = '#991b1b';
+        succ.style.display = 'block';
+      }
+
+      btn.disabled = false;
+      btn.textContent = '✉ Send Message';
+      setTimeout(() => { succ.style.display = 'none'; }, 8000);
+    }
+
+    let selectedStars = 0;
+    document.querySelectorAll('.star-btn').forEach(btn => {
+      btn.addEventListener('mouseover', () => highlightStars(+btn.dataset.val));
+      btn.addEventListener('mouseout', () => highlightStars(selectedStars));
+      btn.addEventListener('click', () => { selectedStars = +btn.dataset.val; highlightStars(selectedStars); });
+    });
+
+    function highlightStars(n) {
+      document.querySelectorAll('.star-btn').forEach(b => b.classList.toggle('active', +b.dataset.val <= n));
+    }
+
+    function escapeHtml(s) {
+      return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    function renderReviews(reviews) {
+      const grid = document.getElementById('reviews-grid');
+      const countEl = document.getElementById('review-count');
+      grid.innerHTML = '';
+      if (!reviews.length) {
+        grid.innerHTML = '<p style="color:#888;font-size:0.9rem;font-style:italic;padding:1rem 0;">No reviews yet — be the first!</p>';
+        countEl.textContent = ''; return;
+      }
+      countEl.textContent = reviews.length === 1 ? '1 review' : reviews.length + ' reviews';
+      reviews.forEach(r => {
+        const el = document.createElement('div');
+        el.className = 'testimonial';
+        const stars = '★'.repeat(r.stars) + '☆'.repeat(5 - r.stars);
+        const dateStr = r.date ? new Date(r.date).toLocaleDateString('en-GB', { year: 'numeric', month: 'short', day: 'numeric' }) : '';
+        el.innerHTML = `<div class="testimonial-stars">${stars}</div><p class="testimonial-text">${escapeHtml(r.text)}</p><p class="testimonial-author">${escapeHtml(r.name)}</p>${dateStr ? `<p class="testimonial-date">${dateStr}</p>` : ''}`;
+        grid.appendChild(el);
+      });
+    }
+
+    async function loadReviews() {
+      const grid = document.getElementById('reviews-grid');
+      grid.innerHTML = '<p style="color:#aaa;font-size:0.85rem;padding:1rem 0;">Loading reviews…</p>';
+      try {
+        const res = await fetch(SUPABASE_URL + '/rest/v1/reviews?select=*&order=created_at.asc', { headers: HEADERS });
+        if (!res.ok) throw new Error('fetch failed');
+        const data = await res.json();
+        if (!data.length) {
+          await seedReviews();
+          return;
+        }
+        renderReviews(data);
+      } catch (e) {
+        grid.innerHTML = '<p style="color:#888;font-size:0.85rem;padding:1rem 0;">Could not load reviews right now.</p>';
+        console.error(e);
+      }
+    }
+
+    async function seedReviews() {
+      try {
+        const res = await fetch(SUPABASE_URL + '/rest/v1/reviews', {
+          method: 'POST',
+          headers: { ...HEADERS, 'Prefer': 'return=representation' },
+          body: JSON.stringify(SEED)
         });
+        if (!res.ok) throw new Error('seed failed');
+        const data = await res.json();
+        renderReviews(data);
+      } catch (e) {
+        console.error('Seed error:', e);
+        renderReviews(SEED);
+      }
+    }
 
-        // ============================================
-        // 5. PROCESS M-PESA PAYMENT
-        // ============================================
-        async function processMpesaPayment() {
-            const phoneInput = document.getElementById('mpesaPhone');
-            const payBtn = document.getElementById('mpesaPayBtn');
-            const originalText = payBtn.innerHTML;
+    async function submitReview() {
+      const name = document.getElementById('r-name').value.trim();
+      const text = document.getElementById('r-text').value.trim();
+      const btn = document.getElementById('submit-btn');
+      const succ = document.getElementById('form-success');
 
-            let phone = phoneInput.value.trim();
+      if (!name) { document.getElementById('r-name').focus(); return; }
+      if (!selectedStars) { alert('Please pick a star rating.'); return; }
+      if (!text) { document.getElementById('r-text').focus(); return; }
 
-            if (!phone) {
-                showToast('Please enter your M-Pesa phone number.', 'fa-exclamation-circle');
-                phoneInput.focus();
-                return;
-            }
+      btn.disabled = true; btn.textContent = 'Posting…';
 
-            phone = phone.replace(/\D/g, '');
-
-            if (!phone.startsWith('254')) {
-                if (phone.startsWith('0')) {
-                    phone = '254' + phone.substring(1);
-                } else if (phone.startsWith('7') || phone.startsWith('1')) {
-                    phone = '254' + phone;
-                } else {
-                    showToast('Please enter a valid Safaricom number (e.g., 254712345678)', 'fa-exclamation-circle');
-                    phoneInput.focus();
-                    return;
-                }
-            }
-
-            if (phone.length !== 12) {
-                showToast('Please enter a valid 10-digit Safaricom number.', 'fa-exclamation-circle');
-                phoneInput.focus();
-                return;
-            }
-
-            payBtn.innerHTML = '<i class="fas fa-spinner fa-spin" aria-hidden="true"></i> Sending STK Push...';
-            payBtn.disabled = true;
-            payBtn.classList.add('loading');
-
-            try {
-                await new Promise(resolve => setTimeout(resolve, 2000));
-
-                closeMpesaModal();
-                showToast(
-                    `✅ STK Push sent to ${phone}. Please check your phone and enter PIN to complete payment.`,
-                    'fa-mobile-alt'
-                );
-
-                console.log('M-Pesa Payment:', {
-                    product: mpesaData.productName,
-                    amount: mpesaData.amountKes,
-                    phone: phone,
-                    timestamp: new Date().toISOString()
-                });
-
-                payBtn.innerHTML = originalText;
-                payBtn.disabled = false;
-                payBtn.classList.remove('loading');
-
-            } catch (error) {
-                console.error('M-Pesa error:', error);
-                showToast('M-Pesa payment failed. Please try again.', 'fa-exclamation-circle');
-                payBtn.innerHTML = originalText;
-                payBtn.disabled = false;
-                payBtn.classList.remove('loading');
-            }
-        }
-
-        // ============================================
-        // 6. HANDLE TIP
-        // ============================================
-        async function handleTip(amount) {
-            const button = event.currentTarget;
-            const originalText = button.innerHTML;
-
-            button.innerHTML = '<i class="fas fa-spinner fa-spin" aria-hidden="true"></i>';
-            button.disabled = true;
-
-            try {
-                await new Promise(resolve => setTimeout(resolve, 1000));
-                showToast(
-                    `❤️ Thank you! $${amount} tip received. William appreciates your support!`,
-                    'fa-heart'
-                );
-                button.innerHTML = originalText;
-                button.disabled = false;
-            } catch (error) {
-                showToast('Tip failed. Please try again.', 'fa-exclamation-circle');
-                button.innerHTML = originalText;
-                button.disabled = false;
-            }
-        }
-
-        // ============================================
-        // 7. HANDLE PERFORMANCE
-        // ============================================
-        function handlePerformance() {
-            showToast(
-                '🎥 "Rivers & Rust" — Check it out on YouTube: youtube.com/william_makori',
-                'fa-play'
-            );
-        }
-
-        // ============================================
-        // 8. HANDLE BOOKING
-        // ============================================
-        function handleBooking() {
-            showToast(
-                '📧 Email: makori.poetry@gmail.com · DM: @william_makori_poetry',
-                'fa-envelope'
-            );
-        }
-
-        // ============================================
-        // 9. URL PARAMETERS
-        // ============================================
-        document.addEventListener('DOMContentLoaded', function () {
-            const urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.has('success')) {
-                showToast('🎉 Purchase successful! Thank you for supporting William!', 'fa-check-circle');
-                window.history.replaceState({}, document.title, window.location.pathname);
-            }
-            if (urlParams.has('canceled')) {
-                showToast('Purchase canceled. No charges were made.', 'fa-times-circle');
-                window.history.replaceState({}, document.title, window.location.pathname);
-            }
+      try {
+        const res = await fetch(SUPABASE_URL + '/rest/v1/reviews', {
+          method: 'POST',
+          headers: { ...HEADERS, 'Prefer': 'return=minimal' },
+          body: JSON.stringify({ name, stars: selectedStars, text, date: new Date().toISOString().split('T')[0] })
         });
-    </script>
+        if (!res.ok) throw new Error('insert failed');
+        document.getElementById('r-name').value = '';
+        document.getElementById('r-text').value = '';
+        selectedStars = 0; highlightStars(0);
+        succ.style.display = 'block';
+        setTimeout(() => { succ.style.display = 'none'; }, 4000);
+        await loadReviews();
+        document.getElementById('testimonials').scrollIntoView({ behavior: 'smooth' });
+      } catch (e) {
+        alert('Sorry, something went wrong. Please try again.');
+        console.error(e);
+      }
 
+      btn.disabled = false; btn.textContent = '✓ Post Review';
+    }
+
+    let currentWorkFilter = 'all';
+    let currentWorkItems = [];
+
+    const WORK_BADGE_CLASS = {
+      Triptych: 'badge-orange',
+      Portrait: 'badge-purple',
+      Figurative: 'badge-blue'
+    };
+
+    function renderWork(items) {
+      const grid = document.getElementById('gallery-grid');
+      grid.innerHTML = '';
+      const visible = currentWorkFilter === 'all' ? items : items.filter(i => i.category === currentWorkFilter);
+
+      if (!visible.length) {
+        grid.innerHTML = '<p class="work-empty-msg">No pieces in this category yet.</p>';
+        return;
+      }
+
+      visible.forEach(item => {
+        const el = document.createElement('div');
+        el.className = 'artwork';
+        const badgeClass = WORK_BADGE_CLASS[item.category] || 'badge-orange';
+        el.innerHTML = `
+          <span class="artwork-badge ${badgeClass}">${escapeHtml(item.category)}</span>
+          <img src="${escapeHtml(item.image_url)}" alt="${escapeHtml(item.title)}">
+          <div class="artwork-caption">
+            <p class="caption-title">${escapeHtml(item.title)}</p>
+            <p class="caption-meta">${escapeHtml(item.meta || '')}</p>
+          </div>`;
+        grid.appendChild(el);
+      });
+    }
+
+    function filterWork(category) {
+      currentWorkFilter = category;
+      document.querySelectorAll('.work-subtab-btn').forEach(b => {
+        b.classList.toggle('active', b.dataset.cat === category);
+      });
+      renderWork(currentWorkItems);
+    }
+
+    async function loadWork() {
+      const grid = document.getElementById('gallery-grid');
+      grid.innerHTML = '<p class="work-loading-msg">Loading work…</p>';
+      try {
+        const res = await fetch(SUPABASE_URL + '/rest/v1/artworks?select=*&order=sort_order.asc', { headers: HEADERS });
+        if (!res.ok) throw new Error('fetch failed');
+        const data = await res.json();
+        if (!data.length) {
+          await seedWork();
+          return;
+        }
+        currentWorkItems = data;
+        renderWork(currentWorkItems);
+      } catch (e) {
+        currentWorkItems = SEED_WORK;
+        renderWork(currentWorkItems);
+        console.error(e);
+      }
+    }
+
+    async function seedWork() {
+      try {
+        const res = await fetch(SUPABASE_URL + '/rest/v1/artworks', {
+          method: 'POST',
+          headers: { ...HEADERS, 'Prefer': 'return=representation' },
+          body: JSON.stringify(SEED_WORK)
+        });
+        if (!res.ok) throw new Error('seed failed');
+        const data = await res.json();
+        currentWorkItems = data;
+        renderWork(currentWorkItems);
+      } catch (e) {
+        console.error('Seed work error:', e);
+        currentWorkItems = SEED_WORK;
+        renderWork(currentWorkItems);
+      }
+    }
+
+    loadReviews();
+    loadWork();
+  </script>
 </body>
 
 </html>
